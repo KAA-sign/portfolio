@@ -1,0 +1,92 @@
+Uri: http://glynjackson.org/
+File Name: J:\SSS\glynjackson.org\index.htm
+Content Type: text/html
+
+Uri: http://glynjackson.org/weblog/
+File Name: J:\SSS\glynjackson.org\weblog\index.htm
+Content Type: text/html
+
+Uri: http://glynjackson.org/weblog/play-nicely-celery-rabbitmq-elb-idle-timeout/
+File Name: J:\SSS\glynjackson.org\weblog\play-nicely-celery-rabbitmq-elb-idle-timeout\index.htm
+Content Type: text/html
+
+Uri: http://glynjackson.org/weblog/?tag=Python
+File Name: J:\SSS\glynjackson.org\weblog\index-1.htm
+Content Type: text/html
+
+Uri: http://glynjackson.org/weblog/?tag=AWS
+File Name: J:\SSS\glynjackson.org\weblog\index-2.htm
+Content Type: text/html
+
+Uri: http://glynjackson.org/weblog/?tag=Celery
+File Name: J:\SSS\glynjackson.org\weblog\index-3.htm
+Content Type: text/html
+
+Uri: http://glynjackson.org/weblog/django-aws-elastic-beanstalk-docker-2/
+File Name: J:\SSS\glynjackson.org\weblog\django-aws-elastic-beanstalk-docker-2\index.htm
+Content Type: text/html
+
+Uri: http://glynjackson.org/weblog/?tag=django
+File Name: J:\SSS\glynjackson.org\weblog\index-4.htm
+Content Type: text/html
+
+Uri: http://glynjackson.org/weblog/?tag=docker
+File Name: J:\SSS\glynjackson.org\weblog\index-5.htm
+Content Type: text/html
+
+Uri: http://glynjackson.org/weblog/tutorial-deploying-django-app-aws-elastic-beanstalk-using-docker/
+File Name: J:\SSS\glynjackson.org\weblog\tutorial-deploying-django-app-aws-elastic-beanstalk-using-docker\index.htm
+Content Type: text/html
+
+Uri: http://glynjackson.org/weblog/python-clang-error-unknown-argument/
+File Name: J:\SSS\glynjackson.org\weblog\python-clang-error-unknown-argument\index.htm
+Content Type: text/html
+
+Uri: http://glynjackson.org/weblog/?tag=pip
+File Name: J:\SSS\glynjackson.org\weblog\index-6.htm
+Content Type: text/html
+
+Uri: http://glynjackson.org/weblog/tutorial-using-angularjs-django/
+File Name: J:\SSS\glynjackson.org\weblog\tutorial-using-angularjs-django\index.htm
+Content Type: text/html
+
+Uri: http://glynjackson.org/weblog/?tag=AngularJS
+File Name: J:\SSS\glynjackson.org\weblog\index-7.htm
+Content Type: text/html
+
+Uri: http://glynjackson.org/weblog/api-authentication-taffy/
+File Name: J:\SSS\glynjackson.org\weblog\api-authentication-taffy\index.htm
+Content Type: text/html
+
+Uri: http://glynjackson.org/weblog/?tag=API
+File Name: J:\SSS\glynjackson.org\weblog\index-8.htm
+Content Type: text/html
+
+Uri: http://glynjackson.org/weblog/?tag=Coldfusion
+File Name: J:\SSS\glynjackson.org\weblog\index-9.htm
+Content Type: text/html
+
+Uri: http://glynjackson.org/weblog/railo-raspberry-pi/
+File Name: J:\SSS\glynjackson.org\weblog\railo-raspberry-pi\index.htm
+Content Type: text/html
+
+Uri: http://glynjackson.org/weblog/?tag=Raspberry Pi
+File Name: J:\SSS\glynjackson.org\weblog\index-10.htm
+Content Type: text/html
+
+Uri: http://glynjackson.org/weblog/ralink-rt-5370-wi-fi-dongle-raspberry-pi/
+File Name: J:\SSS\glynjackson.org\weblog\ralink-rt-5370-wi-fi-dongle-raspberry-pi\index.htm
+Content Type: text/html
+
+Uri: http://glynjackson.org/weblog/django-15-deployment-amazon-ec2-ubuntu/
+File Name: J:\SSS\glynjackson.org\weblog\django-15-deployment-amazon-ec2-ubuntu\index.htm
+Content Type: text/html
+
+Uri: http://glynjackson.org/weblog/installing-python-and-django-windows/
+File Name: J:\SSS\glynjackson.org\weblog\installing-python-and-django-windows\index.htm
+Content Type: text/html
+
+Uri: http://glynjackson.org/weblog/?page=2
+File Name: J:\SSS\glynjackson.org\weblog\index-11.htm
+Content Type: text/html
+

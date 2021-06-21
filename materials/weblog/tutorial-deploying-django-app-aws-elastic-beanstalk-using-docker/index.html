@@ -1,0 +1,440 @@
+
+
+
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <title>
+        Deploying a Django App to AWS Elastic Beanstalk using Docker
+        </title>
+    <meta name="description" content="In this tutorial you will learn the fundamentals of Docker while deploying a Django project to AWS Elastic Beanstalk. In future tutorials (part 2 coming soon) you will build on what you&#39;ve already learned while incorporating best practices and speeding up your deployment."/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="https://s3-eu-west-1.amazonaws.com/glynjacksonorg/css/bootstrap.min.css" /><link rel="stylesheet" href="https://s3-eu-west-1.amazonaws.com/glynjacksonorg/css/flexslider.css" /><link rel="stylesheet" href="https://s3-eu-west-1.amazonaws.com/glynjacksonorg/css/designr-theme-cyan.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link href='http://fonts.googleapis.com/css?family=Lato:400,300,300italic,400italic,700,700italic,900'
+          rel='stylesheet' type='text/css'>
+    
+    <script src="https://s3-eu-west-1.amazonaws.com/glynjacksonorg/js/highlight.pack.js"></script>
+    <link rel="stylesheet" href="https://s3-eu-west-1.amazonaws.com/glynjacksonorg/css/code_highlighters/monokai_sublime.css">
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <script type="text/javascript" src="https://s3-eu-west-1.amazonaws.com/glynjacksonorg/js/libs/modernizr.min.js"></script>
+</head>
+
+<body class="" data-spy="scroll" data-target="#main-nav" data-offset="200">
+
+
+
+    
+<div id="main-nav" class="navbar navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#site-nav">
+                <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand scrollto" href="../../index.html" title="Python Developer Glyn Jackson">GLYN JACKSON<br><span>Freelance Developer</span></a>
+        </div>
+        <div id="site-nav" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="../../index.html#services" title="About my Python and Django services" class="scrollto">About</a>
+                </li>
+                <li>
+                    <a href="../../weblog.html" title="Blog of Glyn Jackson Python Developer">Blog</a>
+                </li>
+                <li>
+                    <a href="https://github.com/glynjackson" target="_blank" title="Python Github Projects" class="scrollto"><i class="fa fa-github"></i> GitHub</a>
+                </li>
+                <li>
+                    <a href="https://www.linkedin.com/in/glynjackson" target="_blank" title="Linkedin Django Projects"
+                       class="scrollto"><i class="fa fa-linkedin-square"></i> LinkedIn</a>
+                </li>
+                <li>
+                    <a href="http://stackoverflow.com/users/1631608/glyn-jackson" target="_blank" title="Stack Python Questions Projects"
+                       class="scrollto"><i class="fa fa-stack-overflow"></i> Stack Overflow</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+
+
+<section id="blog_title">
+
+    <div class="container_blog">
+
+        <div class="row" style="margin-top: 5%">
+
+            <div class="col-sm-6 scrollimation">
+                <h1>Part 1: Introduction to Django on AWS Elastic Beanstalk with Docker</h1>
+
+                <p><i class="fa fa-clock-o"></i> Sept. 23, 2015
+                    <br/>
+                    
+                        <i class="fa fa-tag"></i>
+                        <a href="../index.html%3Ftag=Django.html">  Django</a>
+                    
+                        <i class="fa fa-tag"></i>
+                        <a href="../index.html%3Ftag=Python.html">  Python</a>
+                    
+                        <i class="fa fa-tag"></i>
+                        <a href="../index.html%3Ftag=AWS.html">  AWS</a>
+                    
+                        <i class="fa fa-tag"></i>
+                        <a href="../index.html%3Ftag=docker.html">  docker</a>
+                    
+                </p>
+
+            </div>
+            <div class="col-sm-4 col-sm-offset-1 scrollimation ">
+                
+                    <img alt="Docker Logo" class="img-responsive img-circle img-center" height="350" src="https://glynjacksonorg.s3.amazonaws.com:443/images/fbbb494a7eef5f9278c6967b6072ca3e_4.2e16d0ba.fill-350x350.png" width="350">
+                
+
+            </div>
+        </div>
+        <!--End row -->
+
+    </div>
+    <!--End container -->
+
+</section>
+
+
+<section id="post">
+    <div class="container_blog">
+        <hr>
+        
+            <div class="bs-callout bs-callout-info">
+                <p><strong><i class="fa fa-exclamation-triangle"></i> Please Note:</strong><br/>This post appears to be
+                    over 6 months old. </p>
+            </div>
+        
+
+         <div class="rich-text"><html><head></head><body><p>In this tutorial you will learn the fundamentals of Docker by deploying a Django application to <a href="https://aws.amazon.com/elasticbeanstalk/">AWS Elastic Beanstalk</a>. As we progress you will build on what you've learned while incorporating best practices to speed up your deployment. </p>
+<h2>Why Beanstalk and Docker anyway?</h2>
+<p>Deploying any application can sometimes feel like you're playing roulette. In the past Beanstalk has been criticised for it's lack of flexibility and customisation, but in April 2014 Beanstalk introduced support for Docker and those limitations somewhat lifted.</p>
+<p>Running Docker containers on Elastic Beanstalk allows you to define your own environment. This means you get to choose your own platform, programming language and still take advantage of Beanstalks capacity provisioning, load balancing, scaling, and application monitoring. </p>
+<p>Sounds good right? Well, kinda. Although Elastic Beanstalk can make deployments less painful it takes time to develop and to create your own deployment strategy. It can also be overwhelming if your new to Docker and/or AWS in general. This practical tutorial will help explain some of the fundamentals of Docker by using a boilerplate template to deploy a Django application on AWS. </p>
+<h2>Prerequisites</h2>
+<p>This tutorial assumes you have a basic understanding of <a href="http://supervisord.org/">supervisor</a>, Django/Python, running on a Linux/<a href="https://en.wikipedia.org/wiki/Unix-like">UNIX type system</a> and have an AWS account. If you don't have an AWS account you can signup for their <a href="https://aws.amazon.com/free/">free tier</a>.</p>
+<h2>CLI for AWS Elastic Beanstalk</h2>
+<p>Before you start you will need to pip install the <a href="http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/eb-cli3.html">Elastic Beanstalk command line interface</a> (CLI). This allow you access to Beanstalk functionality without directly logging into the <a href="https://aws.amazon.com/console/">AWS Management Console</a>:</p>
+<pre><code>$ pip install awsebcli</code></pre>
+<p>The current version as of writing is <a href="https://pypi.python.org/pypi/awsebcli/3.5.3">CLI EB 3.5.3</a> running Python 2.7.1. You can check your own version using the "eb --version" command. The Python version of CLI has no bearing on the version of Python we will be running inside your container <em>(more on </em><em>containers later)</em>.</p>
+<h2>Boilerplate Django Docker template</h2>
+<p>To begin, create a new Django project using the boilerplate from GitHub:</p>
+<pre><code>$ django-admin.py startproject --template=https://github.com/glynjackson/django-docker-template/zipball/master mysite</code></pre>
+<p>If preferred you can download the boilerplate directly <a href="https://github.com/glynjackson/django-docker-template">here</a>.</p>
+<p><strong> <i class="fa fa-exclamation-triangle"></i> Important: </strong>The rest of the tutorial is based on using this boilerplate template.</p>
+<p>Once downloaded you will find a directory containing a default Django project, <a href="https://github.com/glynjackson/django-docker-template/blob/master/Dockerfile">Dockerfile</a> and a <a href="https://github.com/glynjackson/django-docker-template/blob/master/Dockerrun.aws.json">Dockerrun.aws.json</a> file. We will look at each one of these files in more detail now. </p>
+<h2>Dockerfile</h2>
+<p>In the root of the project directory is a Dockerfile. A Dockerfile is a simple list of instructions that gets executed to build an image see <a href="https://docs.docker.com/engine/reference/builder/">Dockerfile reference</a>. Each line in the Dockerfile starts with an 'instruction' of which gets executed in-sequence. Each instruction should be in uppercase, for example, <strong>FROM</strong>, <strong>RUN</strong> or <strong>EXPOSE</strong>. Each step is described as a <strong>layer</strong>. Docker uses layers to build a single image. One advantage of this layered approach is to prevent the whole image from being rebuilt when ever a change is made. Instead, only the layer modified will be updated. This concept of layers is an important one and helps you understand how Docker differs from other solutions.</p>
+<p>Open the Dockerfile in your favourite editor. There are some special instructions you should become familiar with. The first of which is '<strong>FROM'</strong> which pulls your base layer. We can see an example of this in the Dockerfile:</p>
+<pre><code>FROM python:3.4
+MAINTAINER Glyn Jackson (me@glynjackson.org)
+</code></pre>
+<p>It builds the official <a href="https://hub.docker.com/_/python/">Python Image</a> form Dockers public repositories which itself is built from a Debian image. The ':3.4' number at the end of the argument is called a <strong>tag</strong> and refers to the build we want to install. </p>
+<p>Another instruction you can see in the template is <strong>RUN</strong>. This allows you to perform shell commands. Each command is executed in a new layer, for example:</p>
+<pre><code>RUN apt-get update \
+ &amp;&amp; apt-get upgrade -y \
+ &amp;&amp; apt-get install -y
+RUN apt-get install -y apt-utils
+RUN apt-get -y install binutils libproj-dev gdal-bin
+</code></pre>
+<p>The <strong>ADD</strong> instruction copies files/directories and adds them to the filesystem of the container. Their are a couple of times you can see this in the template Dockerfie, for example below will add the local file contents to the filesystem: </p>
+<pre><code>ADD . /var/projects/mysite
+</code></pre>
+<p><strong>EXPOSE</strong> opens up ports to be publicly accessible on the container when it's run. You can expose multiple ports on a container<i>.</i> The example below exposes 8002 because this is the port Django will run on inside the container. It is worth noting however that on Beanstalk's single container environments only the first port you expose (8002) is mapped to port 80 using a passthrough server on the actual EC2 instance running Docker.</p>
+<pre><code>EXPOSE 8002</code></pre>
+<p>The template Dockerfile shows one <strong>CMD</strong> instruction. In fact, a Dockerfile should only ever have one CMD instruction in it. In your Dockerfile we are using CMD to run a shell script for default parameters to <strong>ENTRYPOINT. </strong>The CMD instruction in the template is executed whenever a new container is run. </p>
+<pre><code>CMD ["sh", "./deploy/container_start.sh"]</code></pre>
+<p>This shell script does just a few things on start-up. It runs Django's migrate command and starts supervisor:</p>
+<pre><code>#!/bin/sh
+cd /var/projects/mysite &amp;&amp; python manage.py migrate --noinput
+supervisord -n -c /etc/supervisor/supervisord.conf
+</code></pre>
+<p>This script get executed when a container is run so the filesystem is that of container. At this point you also have access to any environment variables you may have set. Hopefully you can already start to see how this could be used in a real environment. </p>
+<h2>Quick recap</h2>
+<ul>
+<li>Instructions reference at: <a href="https://docs.docker.com/engine/reference/builder/">https://docs.docker.com/engine/reference/builder/</a></li>
+<li>Instructions get executed in the order they appear in. </li>
+<li>The first instruction in a Dockerfile <strong>MUST</strong> be FROM <em>(excluding any comments).</em></li>
+<li>Beanstalk always proxies the first exposed port on a single container environment.</li>
+<li>There should only be one CMD instruction in a Dockerfile.</li>
+</ul>
+<p><em>Example Dockerfile:</em></p>
+<pre><code># Base python 3.4 build, inspired by https://github.com/Pakebo/eb-docker-django-simple
+# Python 3.4 | Django
+FROM python:3.4
+MAINTAINER Glyn Jackson (me@glynjackson.org)
+####################################################
+# Environment variables
+####################################################
+# Get noninteractive frontend for Debian to avoid some problems:
+# debconf: unable to initialize frontend: Dialog
+ENV DEBIAN_FRONTEND noninteractive
+####################################################
+# OS Updates and Python packages
+####################################################
+RUN apt-get update \
+ &amp;&amp; apt-get upgrade -y \
+ &amp;&amp; apt-get install -y
+RUN apt-get install -y apt-utils
+# Libs required for geospatial libraries on Debian...
+RUN apt-get -y install binutils libproj-dev gdal-bin
+####################################################
+# A Few pip installs not commonly in requirements.txt
+####################################################
+RUN apt-get install -y nano wget
+# build dependencies for postgres and image bindings
+RUN apt-get install -y python-imaging python-psycopg2
+####################################################
+# setup startup script for gunicord WSGI service
+####################################################
+RUN groupadd webapps
+RUN useradd webapp -G webapps
+RUN mkdir -p /var/log/webapp/ &amp;&amp; chown -R webapp /var/log/webapp/ &amp;&amp; chmod -R u+rX /var/log/webapp/
+RUN mkdir -p /var/run/webapp/ &amp;&amp; chown -R webapp /var/run/webapp/ &amp;&amp; chmod -R u+rX /var/run/webapp/
+####################################################
+# Install and configure supervisord
+####################################################
+RUN apt-get install -y supervisor
+RUN mkdir -p /var/log/supervisor
+ADD ./deploy/supervisor_conf.d/webapp.conf /etc/supervisor/conf.d/webapp.conf
+####################################################
+# Install dependencies and run scripts.
+####################################################
+ADD . /var/projects/mysite
+WORKDIR /var/projects/mysite
+RUN pip install -r requirements.txt
+####################################################
+# Run start.sh script when the container starts.
+# Note: If you run migrations etc outside CMD, envs won't be available!
+####################################################
+CMD ["sh", "./deploy/container_start.sh"]
+# Expose listen ports
+EXPOSE 8002</code></pre>
+<h2>Dockerfile.aws.json</h2>
+<p>This <a href="https://github.com/glynjackson/django-docker-template/blob/master/Dockerrun.aws.json">file</a> describes how to deploy a container in AWS EB however, it's <strong>not</strong> part of the Docker specification. Later in part two of the tutorial you will learn how to use this file to pull images directly. However, we will be using it to configure AWS to built the image each time you push to Beanstalk.</p>
+<pre><code>{
+ "AWSEBDockerrunVersion": "1",
+ "Logging": "/var/eb_log"
+}
+</code></pre>
+<p>Once the image has been built Beanstalk runs a separate container on each EC2 instance you have running. </p>
+<h2>Initialise your environment</h2>
+<p>But before we can get Beanstalk to build our image we need to initialise the Elastic Beanstalk environment your application versions will sit inside. In terminal from the project root directory enter the following to initialise. </p>
+<pre><code>$ eb init</code></pre>
+<p>If you've setup CLI correctly you will be prompted to select the region your instance will be deployed in.</p>
+<p>Next, you will be prompted to create or select an name for your application. For the propose of this tutorial enter something like "mydemo-app ". </p>
+<p>Last, Elastic Beanstalk should detect the Dockerfile already included in your project directory from the boilerplate. If you're not given this option then make sure you're running from the root of the project directory. The message should read "<em>It appears you are using Docker. Is this correct?</em>", answer yes. You may also have to choose which platform version you are using, select "Docker 1.6.2" from the options given.</p>
+<p>When "eb init" has finished doing its stuff, your project directory will contain a new hidden folder called ".elasticbeanstalk" with a file "config.yml". The content of config.yml looks something like this:</p>
+<pre><code>branch-defaults:
+ master:
+ environment: none
+global:
+ application_name: mysite
+ default_ec2_keyname: name_of_your_key
+ default_platform: Docker 1.6.2
+ default_region: eu-west-1
+ profile: glynjackson
+ sc: git
+</code></pre>
+<p>Your own region, key and profile will differ from above course.</p>
+<p>You should now have an empty application, to see it in the AWS dashboard type:</p>
+<pre><code>$ eb console</code></pre>
+<p>Looking back at the "config.yml" file take note of the "branch-defaults". You will see "master" has no environment setup yet. The environment relates to your <strong>local</strong> git branch and is also the version it deploys. At the moment you don't have anything configured for master. So lets change that...</p>
+<h2>Create an environment &amp; first deployment</h2>
+<p>In your project directory enter the following in terminal:</p>
+<pre><code>$ eb create</code></pre>
+<p>You will be prompted with a series of questions about the environment. Follow a naming convention like "my-app-staging" or "my-app-production" which reflects the branch you will be deploying. This will make more sense when you have multiple environment deployed. Running the above command means Elastic Beanstalk will start to create your new environment for you, the first time this can take several minutes so go make a cup of tea!</p>
+<p>If you return from that lovely cup of Earl Grey and see your environment is red <em>(in the console)</em>, or there were errors running "eb create", you can run "eb logs" or "eb events" to view any problems that occurred during the creation of the environment. </p>
+<p>Common problems usually relate to bad permissions or incorrect keys, however if you find a problem with the boilerplate then please report it on GitHub.</p>
+<p>If your environment is green you can open your newly deployed application by entering:</p>
+<pre><code>$ eb open </code></pre>
+<p>You can also check your environment status by typing "eb status" in the command line.</p>
+<p><img class="richtext-image full-width" src="https://glynjacksonorg.s3.amazonaws.com:443/images/django-start-page1-8.width-800.png" width="707" height="161" alt="Django start page screenshot"></p>
+<p>That's it! You have deployed a Django application using Docker. </p>
+<h2>What about Nginx?</h2>
+<p>To help facilitate the traffic with a load balanced environment, Elastic Beanstalk uses a passthrough webserver on single container docker environments. Since Elastic Beanstalk already includes a webserver, it's not necessary to install Nginx on the docker container. </p>
+<p>To change the configuration of the Nginx server on the instance in Elastic Beanstalk, you need to include a ".config" file(s) in a folder called ".ebextensions" inside the root of mysite.</p>
+<p>An example config that changes max client upload size would look something like this: </p>
+<p><em>01_nginx_proxy.config</em>:</p>
+<pre><code>files:
+ "/etc/nginx/conf.d/proxy.conf" :
+ mode: "000755"
+ owner: root
+ group: root
+ content: |
+ client_max_body_size 25m;</code></pre>
+<h2>Conclusion</h2>
+<p>You can already see that Docker can be a powerful tool, however, you may have also figured-out that Beanstalk is building the <strong>Docker image</strong> every time you deploy. One of the main advantages of using Docker is that you can build and ship anywhere. Building an image each time you deploy takes up valuable time and is counter intuitive! Thankfully, Beanstalk provide another way of running Docker by pulling a pre-built image from Docker Hub. </p>
+<p>In <a href="../django-aws-elastic-beanstalk-docker-2/index.html">part 2</a> you will learn how to deploy and manage your application using a pre-built image from Docker Hub.</p></body></html></div> 
+    </div>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<section id="comments">
+    <div class="container_blog">
+
+        <div class="row">
+            <div class="row">
+
+
+                <div id="disqus_thread"></div>
+                <script type="text/javascript">
+                    /* * * CONFIGURATION VARIABLES * * */
+                    var disqus_shortname = 'glynjacksondjangoandpython';
+
+                    /* * * DON'T EDIT BELOW THIS LINE * * */
+                    (function () {
+                        var dsq = document.createElement('script');
+                        dsq.type = 'text/javascript';
+                        dsq.async = true;
+                        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                    })();
+                </script>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<section id="sign-off">
+    <div class="container_blog blog_on_blue">
+
+
+        <div class="row">
+            <div class="col-sm-4 col-sm-offset-1">
+                <img class="scrollimation img-responsive img-circle img-center rounded"
+                     src="https://en.gravatar.com/userimage/39276331/5a5bcef78ab3be209b97726888f2aef6.jpg?size=350"
+                     alt="">
+            </div>
+            <div class="col-sm-6 col-sm-offset-1 scrollimation">
+                <h1>That's all Folks!</h1>
+
+                <p>Thanks for reading. Let's keep in Touch:
+                    </br> Follow me on <a href="https://github.com/glynjackson" target="_blank">GitHub</a>
+                    or Twitter @<a href="https://twitter.com/glynjackson" target="_blank">glynjackson</a>
+
+                </p>
+                </br>
+                <p>Glyn Jackson is a Python Nerd, consultant and developer.
+                </p>
+                </br>
+                <a href="http://www.glynjackson.org" title="Home of Django Python Developer"
+                   class="btn btn-theme transparent scrollto">Find out more</a>
+            </div>
+        </div>
+        <!--End row -->
+
+
+    </div>
+</section>
+
+
+
+
+    <footer id="main-footer">
+    <div class="container">
+
+        <div class="row">
+            <div class="col-sm-6 left-col">
+                <h1 class="small-logo">GLYN JACKSON<br><span>Freelance Python & Django Engineer</span></h1>
+                <ul class="footer-nav">
+                    <li><a class="scrollto" href="../../index.html#home" title="Manchester Django Developer">Home</a></li>
+                    <li><a class="scrollto" href="../../index.html#services" title="Manchester Python Developer">Services</a></li>
+                    <li><a class="scrollto" href="../../index.html#portfolio" title="Manchester Developer Portfolio">Portfolio</a></li>
+                    <li><a class="scrollto" href="../../index.html#contact" title="Hire Me In Cheshire & Manchester, UK">Hire Me</a>
+                    </li>
+                    <li><a class="scrollto" href="../../weblog.html" title="Django, Python Blog">Blog</a>
+                    </li>
+                </ul>
+                <p>&copy; Copyright 2016 Webovate Ltd.<br/> Cheshire, Manchester, Freelance Python, Django Developer</p>
+            </div>
+            <div class="col-sm-6 right-col">
+                <h2>Disclaimer</h2>
+                <p>If you use any text, please provide a reference back to the original entry.
+                    <br/>Opinions expressed here represent my own.</p>
+                <a href="https://www.ipse.co.uk/" rel="nofollow" target="_blank"
+                   title="PCG Voice of Freelancing Website">
+                    <img src="https://s3-eu-west-1.amazonaws.com/glynjacksonorg/assets/ipse.jpg" alt="Membership IPSE Voice of Freelancing Logo">
+                </a>
+                <a href="https://www.python.org" target="_blank" title="Python Website Link">
+                    <img src="https://s3-eu-west-1.amazonaws.com/glynjacksonorg/assets/powered-by.jpg" alt="Django and Python Logo">
+                </a>
+            </div>
+
+        </div>
+    </div>
+</footer>
+
+<script type="text/javascript" src="https://s3-eu-west-1.amazonaws.com/glynjacksonorg/js/glynjackson.js"></script>
+</body>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="https://s3-eu-west-1.amazonaws.com/glynjacksonorg/js/libs/jquery-1.8.2.min.js">\x3C/script>')</script>
+
+<script src="https://s3-eu-west-1.amazonaws.com/glynjacksonorg/js/libs/bootstrap.min.js"></script>
+
+
+
+    <script src="https://s3-eu-west-1.amazonaws.com/glynjacksonorg/js/designr-blog.js"></script>
+
+
+<script>
+    (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] || function () {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date();
+        a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+    ga('create', 'UA-68013935-1', 'auto');
+    ga('send', 'pageview');
+
+</script>
+
+</html>

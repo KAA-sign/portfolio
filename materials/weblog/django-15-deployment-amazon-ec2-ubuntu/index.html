@@ -1,0 +1,540 @@
+
+
+
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <title>
+        Django 1.5 deployment on Amazon EC2 Ubuntu
+        </title>
+    <meta name="description" content="This tutorial demonstrates the installation and deployment solution I found to be the most fitting for my own Django projects"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="https://s3-eu-west-1.amazonaws.com/glynjacksonorg/css/bootstrap.min.css" /><link rel="stylesheet" href="https://s3-eu-west-1.amazonaws.com/glynjacksonorg/css/flexslider.css" /><link rel="stylesheet" href="https://s3-eu-west-1.amazonaws.com/glynjacksonorg/css/designr-theme-cyan.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link href='http://fonts.googleapis.com/css?family=Lato:400,300,300italic,400italic,700,700italic,900'
+          rel='stylesheet' type='text/css'>
+    
+    <script src="https://s3-eu-west-1.amazonaws.com/glynjacksonorg/js/highlight.pack.js"></script>
+    <link rel="stylesheet" href="https://s3-eu-west-1.amazonaws.com/glynjacksonorg/css/code_highlighters/monokai_sublime.css">
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <script type="text/javascript" src="https://s3-eu-west-1.amazonaws.com/glynjacksonorg/js/libs/modernizr.min.js"></script>
+</head>
+
+<body class="" data-spy="scroll" data-target="#main-nav" data-offset="200">
+
+
+
+    
+<div id="main-nav" class="navbar navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#site-nav">
+                <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand scrollto" href="../../index.html" title="Python Developer Glyn Jackson">GLYN JACKSON<br><span>Freelance Developer</span></a>
+        </div>
+        <div id="site-nav" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="../../index.html#services" title="About my Python and Django services" class="scrollto">About</a>
+                </li>
+                <li>
+                    <a href="../../weblog.html" title="Blog of Glyn Jackson Python Developer">Blog</a>
+                </li>
+                <li>
+                    <a href="https://github.com/glynjackson" target="_blank" title="Python Github Projects" class="scrollto"><i class="fa fa-github"></i> GitHub</a>
+                </li>
+                <li>
+                    <a href="https://www.linkedin.com/in/glynjackson" target="_blank" title="Linkedin Django Projects"
+                       class="scrollto"><i class="fa fa-linkedin-square"></i> LinkedIn</a>
+                </li>
+                <li>
+                    <a href="http://stackoverflow.com/users/1631608/glyn-jackson" target="_blank" title="Stack Python Questions Projects"
+                       class="scrollto"><i class="fa fa-stack-overflow"></i> Stack Overflow</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+
+
+<section id="blog_title">
+
+    <div class="container_blog">
+
+        <div class="row" style="margin-top: 5%">
+
+            <div class="col-sm-6 scrollimation">
+                <h1>Django 1.5 deployment on Amazon EC2 Ubuntu</h1>
+
+                <p><i class="fa fa-clock-o"></i> May 26, 2013
+                    <br/>
+                    
+                        <i class="fa fa-tag"></i>
+                        <a href="../index.html%3Ftag=Django.html">  Django</a>
+                    
+                        <i class="fa fa-tag"></i>
+                        <a href="../index.html%3Ftag=AWS.html">  AWS</a>
+                    
+                </p>
+
+            </div>
+            <div class="col-sm-4 col-sm-offset-1 scrollimation ">
+                
+
+            </div>
+        </div>
+        <!--End row -->
+
+    </div>
+    <!--End container -->
+
+</section>
+
+
+<section id="post">
+    <div class="container_blog">
+        <hr>
+        
+            <div class="bs-callout bs-callout-info">
+                <p><strong><i class="fa fa-exclamation-triangle"></i> Please Note:</strong><br/>This post appears to be
+                    over 6 months old. </p>
+            </div>
+        
+
+         <div class="rich-text"><html><head></head><body><h2>Introduction</h2>
+ 
+ <p>Six months ago I began my <a href="https://www.djangoproject.com/" title="Django Framework">Django</a> journey. Since then I have setup, installed and utilised many different deployment mechanisms for projects. This tutorial demonstrates the installation and deployment solution I found to be the most fitting for my own Django projects. So, I’d like to share… </p>
+ 
+ <h2>Why Git?</h2>
+ 
+ <p>I’ve been using <a href="http://git-scm.com/" title="GIT">Git</a> for deployment within our company for sometime. It was a natural fit since all our projects already used GIT for version control and our development team understands it. What’s best, it's completely free!</p>
+ 
+ <h2>Prerequisites</h2>
+ 
+ <p>One will assume you are already familiar, perhaps even using GIT and have a basic understanding of Apache, Ubuntu Server and Django.</p>
+ 
+ <p>I tend to use Cloud computing such as <a href="http://aws.amazon.com/" title="Amazon AWS ">Amazon AWS</a>. I have tested this tutorial on a EC2 instance running Ubuntu 12.</p>
+ 
+ <h2>Installing our Server Software</h2>
+ 
+ <p>So as mentioned above I’ll be using an EC2 instance for this writeup. So first ssh in and do any updates.</p>
+ 
+ <pre class="highlight"> apt-get update
+ apt-get upgrade
+ </pre>
+ 
+ <p>Next,  you will need to install Apache2, Python, and PIP using the following commands...</p>
+ 
+ <pre class="highlight"> apt-get -y install apache2-mpm-worker apache2-dev
+ apt-get -y install python python-dev python-setuptools 
+ sudo apt-get install python-pip
+ pip install --upgrade pip
+ </pre>
+ 
+ <p>We will wget the latest mod_wsgi, since the time I checked Ubuntu only offered outdated version. Last commands here will add the mod to Apache2 and disable Apaches default site.</p>
+ 
+ <pre class="highlight"> apt-get install make
+ wget http://modwsgi.googlecode.com/files/mod_wsgi-3.3.tar.gz
+ tar xvfz mod_wsgi-3.3.tar.gz
+ cd mod_wsgi-3.3
+ ./configure
+ make
+ make install
+ echo "LoadModule wsgi_module /usr/lib/apache2/modules/mod_wsgi.so" &gt; /etc/apache2/mods-available/wsgi.load
+ a2enmod wsgi
+ a2dissite default
+ </pre>
+ 
+ <p>Note: I have had emails about permissions issues to resolve use 'sudo' i.e.:</p>
+ 
+ <pre class="highlight"> sudo echo "LoadModule wsgi_module /usr/lib/apache2/modules/mod_wsgi.so" | sudo tee /etc/apache2/mods-available/wsgi.load
+ </pre>
+ 
+ <h2>Database?</h2>
+ 
+ <p>A lot of tutorials at this stage will show you how to setup mysql on the same instance, but I highly recommend against this in production! My philosophy is that each instance should have its own dedicated job, besides AWS is cheap!  Another consideration is to use Amazon’ RDS. There are several advantages over having a separate instance for your DB, but that’s beyond the scope of this tutorial.</p>
+ 
+ <p>I’ll assume you have setup and installed the database of your choosing and continue with the setup.</p>
+ 
+ <h2>Install Python environment and Django</h2>
+ 
+ <p>You probably already know the benefits of apt-get. Automatic update notifications, other apt-installed packages that need those tools know they're installed, etc.</p>
+ 
+ <p>With pip, you know you're getting the latest version at the time you install it, you can install to a non-default version of Python, and you can install to a virtualenv (if you want to).</p>
+ 
+ <pre class="highlight"> apt-get install python-pip python-dev build-essential 
+ pip install setuptools --no-use-wheel --upgrade
+ pip install django
+ </pre>
+ 
+ <p>So what about virtualenv? You may have just noticed I didn’t install virtualenv! This is where many other developers may not agree with me. In production, I don’t tend to use virtualenv!</p>
+ 
+ <p>In most cases I would agree it is best to setup with virtualenv, even if it doesn't seem like you need. That being said, if you are using cloud services such as AWS where computing power is very cheap and each instance is designed for a specific task, then I don't really see any the point of using a virtual environment.</p>
+ 
+ <p>Now we can make a new location for the project directory.</p>
+ 
+ <pre class="highlight"> cd /srv
+ sudo mkdir project
+ cd project
+ </pre>
+ 
+ <p>Within the new project folder start a new Django Project.</p>
+ 
+ <pre class="highlight"> django-admin.py startproject website</pre>
+ 
+ <p>In our newly created website folder we will now crate another directory which we will use to store our *.wsgi file.</p>
+ 
+ <pre class="highlight"> cd website 
+ mkdir apache 
+ cd apache </pre>
+ 
+ <p>For this tutorial I use a linux command-line editor called 'nano' as it's pre-installed, but you can use any editor of your choosing of course.</p>
+ 
+ <pre class="highlight"> nano django.wsgi
+ </pre>
+ 
+ <p>Paste the following code into the editor then save it. Remeber to replace 'WEBSITE' with what ever you have called your new project.</p>
+ 
+ <pre class="highlight"> import os
+ import sys
+  
+  path = '/srv/project/WEBSITE'
+  if path not in sys.path:
+      sys.path.insert(0, '/srv/project/WEBSITE')
+  
+  os.environ['DJANGO_SETTINGS_MODULE'] = 'WEBSITE.settings'
+  
+  import django.core.handlers.wsgi
+  application = django.core.handlers.wsgi.WSGIHandler()</pre>
+ 
+ <p>Now, lets create a  new directory to hold our logs later on.</p>
+ 
+ <pre class="highlight"> cd /srv/project/
+ mkdir logs
+ nano logs/error.log</pre>
+ 
+ <p>Now, we will create a system to run Apache's mod_WSGI process. Make sure to edit USERNAME.</p>
+ 
+ <pre class="highlight"> useradd --system --no-create-home --home-dir /srv/my_project/ --user-group USERNAME
+  chsh -s /bin/bash USERNAME</pre>
+ 
+ <h2>Apache Site Configuration</h2>
+ 
+ <p>Below is an example site configuration which works on most environments. Open nano to the site file with the following command. Remember to change DOMAIN with your own domain name.</p>
+ 
+ <pre class="highlight"> nano /etc/apache2/sites-available/DOMAIN</pre>
+ 
+ <p>Paste the following to the editor and edit DOMAIN with your own domain name and USER with the username we just created a while ago.</p>
+ 
+ <pre class="highlight"> &lt;VirtualHost *:80&gt;
+ ServerName www.DOMAIN.com
+ ServerAlias   DOMAIN.com
+ ServerAlias *.DOMAIN.com
+ 
+ DocumentRoot /srv/project/WEBSITE
+ 
+ Alias /robots.txt "/srv/project/WEBSITE/public/robots.txt"
+ Alias /static "/srv/project/WEBSITE/static"
+     &lt;Location "/static/"&gt;
+         SetHandler None
+     &lt;/Location&gt;
+ 
+ &lt;Directory /srv/project/WEBSITE/apache&gt;
+ Order deny,allow
+ Allow from all
+ &lt;/Directory&gt;
+ 
+ WSGIDaemonProcess DOMAIN.com processes=2 threads=15 display-name=%{GROUP}
+ WSGIProcessGroup DOMAIN.com
+ 
+ WSGIScriptAlias / /srv/project/WEBSITE/apache/django.wsgi
+ ErrorLog /srv/project/logs/error.log
+ &lt;/VirtualHost&gt;
+  
+  
+  
+  </pre>
+ 
+ <p>If you are using Apache 2.4 configuration the directory permission is a little different.</p>
+ 
+ <pre class="highlight"> &lt;Directory /srv/project/WEBSITE/apache&gt;
+ Require all granted
+ &lt;/Directory&gt;
+  </pre>
+ 
+ <p>You will have noticed a few directories/files in the above configuration we don't have yet. I'm assuming these files such robots.txt will be deployed in your first commit.</p>
+ 
+ <p>Now we just need to activate that configuration we just created with Apache. Remeber again to edit DOMAIN again to your domain name or whatever you called you file.</p>
+ 
+ <pre class="highlight"> a2ensite DOMAIN</pre>
+ 
+ <p>MySQL dependency to Python Next we need to install MySQL-module for our Python environment</p>
+ 
+ <pre class="highlight"> apt-get build-dep python-mysqldb</pre>
+ 
+ <p>Now we have to set permissions for the user we made while ago. Edit USERNAME to your own.</p>
+ 
+ <pre class="highlight"> chown -R USERNAME:USERNAME /srv/project/</pre>
+ 
+ <p>We have done everything to deploy Django so, all we need to do in order to get Django working is to restart Apache webserver.</p>
+ 
+ <pre class="highlight"> service apache2 restart</pre>
+ 
+ <p>If the restart fails, check your logs. It could be because you don't yet have some of the directories we mentioned in our configuration.</p>
+ 
+ <h2>Setup Deployment using GIT</h2>
+ 
+ <p>The basic principle for this to work is that we create two repositories on the server. The actual live production folder in your example that’s /srv/project/ and we will have a bare “hub” repository that will act as the master copy. Local changes will be pushed to the “hub” and will then be pulled into the live repo by a post-update hook.  If this not clear hopefully the setup will help explain. </p>
+ 
+ <p>On the server we will create a bare repository this is where what we will use to push the live repo code into. We will never push directly to our project folder.</p>
+ 
+ <pre class="highlight"> sudo sudo apt-get install git-core
+  cd /home/ubuntu
+  sudo mkdir repo
+  cd repo git init --bar<code>e</code></pre>
+ 
+ <h2>Hooks</h2>
+ 
+ <p>Next we need to setup a hook. First will make sure that any time anything is pushed to the hub repository it will be pulled into the live repository located at /srv/project/website.</p>
+ 
+ <p>GIT repository hooks are stored in the hooks directory of the bare repository we just created.</p>
+ 
+ <pre class="highlight"> cd /home/ubuntu/repo/hooks</pre>
+ 
+ <p>Now create the hook post-receive...</p>
+ 
+ <pre class="highlight"> nano post-receive</pre>
+ 
+ <p>Paste the following code, again remember to replace with your own WEBSITE if different.</p>
+ 
+ <pre class="highlight"> #!/bin/sh
+  GIT_WORK_TREE=/srv/project/WEBSITE
+  export GIT_WORK_TREE
+  git checkout –f</pre>
+ 
+ <p>We need to make sure this file we have just created is now executable.</p>
+ 
+ <pre class="highlight"> chmod +x hooks/post-receive</pre>
+ 
+ <p>We are almost ready to push our local repository to the server, however before we can do this we have to edit the server authorized_keys to allow use to ssh from our local machine.</p>
+ 
+ <p>Make sure you are in your home directory i.e. /home/ubuntu. You won't see the directory called '.ssh' if you were to list 'ls' the folder out, don't worry if its not there as it's hidden!</p>
+ 
+ <pre class="highlight"> cd .ssh
+  nano authorized_keys</pre>
+ 
+ <p>Copy your local machine (Mac, PC, etc) rsa.pub key to the servers authorized_keys file then save the file. Without doing this you will not be able to push your project later!</p>
+ 
+ <p>And that’s your server setup completed!</p>
+ 
+ <h2>Push your Local Website</h2>
+ 
+ <p>Now the fun bit. On your local machine, setup a remote GIT repository then we create a remote which points to the repository on your server we just created in the home directory...</p>
+ 
+ <pre class="highlight"> git remote add deploy ssh://ubuntu@xx.xxx.xx.xxx/home/ubuntu/repo
+  git push deploy +master:refs/heads/master</pre>
+ 
+ <p>If all is setup correctly your local repo has just been pushed to the server and when it finished the site was automatically checked out into /srv/project/WEBSITE</p>
+ 
+ <p>To push in future, you will only need...</p>
+ 
+ <pre class="highlight"> git push deploy</pre>
+ 
+ <p>If you now restart the server you should not have any errors. All Done!</p>
+ 
+ <h2>NOTES:</h2>
+ 
+ <p>I have included an example of my own git ignore file below....</p>
+ 
+ <pre class="highlight"> *.pyc
+  *.pyo
+  .installed.cfg
+  bin
+  develop-eggs
+  dist
+  downloads
+  eggs
+  parts
+  src/*.egg-info
+  lib
+  lib64
+  .idea/
+  /static/
+  workspace.xml
+  /django-env/
+  /south/
+  core/migrations/
+  *migrations/
+  *migration/
+  *initial.py
+  /*.ini
+  </pre></body></html></div> 
+    </div>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<section id="comments">
+    <div class="container_blog">
+
+        <div class="row">
+            <div class="row">
+
+
+                <div id="disqus_thread"></div>
+                <script type="text/javascript">
+                    /* * * CONFIGURATION VARIABLES * * */
+                    var disqus_shortname = 'glynjacksondjangoandpython';
+
+                    /* * * DON'T EDIT BELOW THIS LINE * * */
+                    (function () {
+                        var dsq = document.createElement('script');
+                        dsq.type = 'text/javascript';
+                        dsq.async = true;
+                        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                    })();
+                </script>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<section id="sign-off">
+    <div class="container_blog blog_on_blue">
+
+
+        <div class="row">
+            <div class="col-sm-4 col-sm-offset-1">
+                <img class="scrollimation img-responsive img-circle img-center rounded"
+                     src="https://en.gravatar.com/userimage/39276331/5a5bcef78ab3be209b97726888f2aef6.jpg?size=350"
+                     alt="">
+            </div>
+            <div class="col-sm-6 col-sm-offset-1 scrollimation">
+                <h1>That's all Folks!</h1>
+
+                <p>Thanks for reading. Let's keep in Touch:
+                    </br> Follow me on <a href="https://github.com/glynjackson" target="_blank">GitHub</a>
+                    or Twitter @<a href="https://twitter.com/glynjackson" target="_blank">glynjackson</a>
+
+                </p>
+                </br>
+                <p>Glyn Jackson is a Python Nerd, consultant and developer.
+                </p>
+                </br>
+                <a href="http://www.glynjackson.org" title="Home of Django Python Developer"
+                   class="btn btn-theme transparent scrollto">Find out more</a>
+            </div>
+        </div>
+        <!--End row -->
+
+
+    </div>
+</section>
+
+
+
+
+    <footer id="main-footer">
+    <div class="container">
+
+        <div class="row">
+            <div class="col-sm-6 left-col">
+                <h1 class="small-logo">GLYN JACKSON<br><span>Freelance Python & Django Engineer</span></h1>
+                <ul class="footer-nav">
+                    <li><a class="scrollto" href="../../index.html#home" title="Manchester Django Developer">Home</a></li>
+                    <li><a class="scrollto" href="../../index.html#services" title="Manchester Python Developer">Services</a></li>
+                    <li><a class="scrollto" href="../../index.html#portfolio" title="Manchester Developer Portfolio">Portfolio</a></li>
+                    <li><a class="scrollto" href="../../index.html#contact" title="Hire Me In Cheshire & Manchester, UK">Hire Me</a>
+                    </li>
+                    <li><a class="scrollto" href="../../weblog.html" title="Django, Python Blog">Blog</a>
+                    </li>
+                </ul>
+                <p>&copy; Copyright 2016 Webovate Ltd.<br/> Cheshire, Manchester, Freelance Python, Django Developer</p>
+            </div>
+            <div class="col-sm-6 right-col">
+                <h2>Disclaimer</h2>
+                <p>If you use any text, please provide a reference back to the original entry.
+                    <br/>Opinions expressed here represent my own.</p>
+                <a href="https://www.ipse.co.uk/" rel="nofollow" target="_blank"
+                   title="PCG Voice of Freelancing Website">
+                    <img src="https://s3-eu-west-1.amazonaws.com/glynjacksonorg/assets/ipse.jpg" alt="Membership IPSE Voice of Freelancing Logo">
+                </a>
+                <a href="https://www.python.org" target="_blank" title="Python Website Link">
+                    <img src="https://s3-eu-west-1.amazonaws.com/glynjacksonorg/assets/powered-by.jpg" alt="Django and Python Logo">
+                </a>
+            </div>
+
+        </div>
+    </div>
+</footer>
+
+<script type="text/javascript" src="https://s3-eu-west-1.amazonaws.com/glynjacksonorg/js/glynjackson.js"></script>
+</body>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="https://s3-eu-west-1.amazonaws.com/glynjacksonorg/js/libs/jquery-1.8.2.min.js">\x3C/script>')</script>
+
+<script src="https://s3-eu-west-1.amazonaws.com/glynjacksonorg/js/libs/bootstrap.min.js"></script>
+
+
+
+    <script src="https://s3-eu-west-1.amazonaws.com/glynjacksonorg/js/designr-blog.js"></script>
+
+
+<script>
+    (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] || function () {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date();
+        a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+    ga('create', 'UA-68013935-1', 'auto');
+    ga('send', 'pageview');
+
+</script>
+
+</html>

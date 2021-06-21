@@ -1,0 +1,606 @@
+
+
+
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <title>
+        Tutorial: Using AngularJS with Django
+        </title>
+    <meta name="description" content="Having read posts on the subject of using Django and Angular together, I felt most were reinventing the wheel.. Although the example code I have given is crude it should highlight how I&#39;ve been using them on projects."/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="https://s3-eu-west-1.amazonaws.com/glynjacksonorg/css/bootstrap.min.css" /><link rel="stylesheet" href="https://s3-eu-west-1.amazonaws.com/glynjacksonorg/css/flexslider.css" /><link rel="stylesheet" href="https://s3-eu-west-1.amazonaws.com/glynjacksonorg/css/designr-theme-cyan.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link href='http://fonts.googleapis.com/css?family=Lato:400,300,300italic,400italic,700,700italic,900'
+          rel='stylesheet' type='text/css'>
+    
+    <script src="https://s3-eu-west-1.amazonaws.com/glynjacksonorg/js/highlight.pack.js"></script>
+    <link rel="stylesheet" href="https://s3-eu-west-1.amazonaws.com/glynjacksonorg/css/code_highlighters/monokai_sublime.css">
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <script type="text/javascript" src="https://s3-eu-west-1.amazonaws.com/glynjacksonorg/js/libs/modernizr.min.js"></script>
+</head>
+
+<body class="" data-spy="scroll" data-target="#main-nav" data-offset="200">
+
+
+
+    
+<div id="main-nav" class="navbar navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#site-nav">
+                <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand scrollto" href="../../index.html" title="Python Developer Glyn Jackson">GLYN JACKSON<br><span>Freelance Developer</span></a>
+        </div>
+        <div id="site-nav" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="../../index.html#services" title="About my Python and Django services" class="scrollto">About</a>
+                </li>
+                <li>
+                    <a href="../../weblog.html" title="Blog of Glyn Jackson Python Developer">Blog</a>
+                </li>
+                <li>
+                    <a href="https://github.com/glynjackson" target="_blank" title="Python Github Projects" class="scrollto"><i class="fa fa-github"></i> GitHub</a>
+                </li>
+                <li>
+                    <a href="https://www.linkedin.com/in/glynjackson" target="_blank" title="Linkedin Django Projects"
+                       class="scrollto"><i class="fa fa-linkedin-square"></i> LinkedIn</a>
+                </li>
+                <li>
+                    <a href="http://stackoverflow.com/users/1631608/glyn-jackson" target="_blank" title="Stack Python Questions Projects"
+                       class="scrollto"><i class="fa fa-stack-overflow"></i> Stack Overflow</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+
+
+<section id="blog_title">
+
+    <div class="container_blog">
+
+        <div class="row" style="margin-top: 5%">
+
+            <div class="col-sm-6 scrollimation">
+                <h1>Tutorial: Using AngularJS with Django</h1>
+
+                <p><i class="fa fa-clock-o"></i> Jan. 31, 2014
+                    <br/>
+                    
+                        <i class="fa fa-tag"></i>
+                        <a href="../index.html%3Ftag=AngularJS.html">  AngularJS</a>
+                    
+                        <i class="fa fa-tag"></i>
+                        <a href="../index.html%3Ftag=Django.html">  Django</a>
+                    
+                        <i class="fa fa-tag"></i>
+                        <a href="../index.html%3Ftag=Python.html">  Python</a>
+                    
+                </p>
+
+            </div>
+            <div class="col-sm-4 col-sm-offset-1 scrollimation ">
+                
+                    <img alt="JS" class="img-responsive img-circle img-center" height="350" src="https://glynjacksonorg.s3.amazonaws.com:443/images/maxresdefault.2e16d0ba.fill-350x350.jpg" width="350">
+                
+
+            </div>
+        </div>
+        <!--End row -->
+
+    </div>
+    <!--End container -->
+
+</section>
+
+
+<section id="post">
+    <div class="container_blog">
+        <hr>
+        
+            <div class="bs-callout bs-callout-info">
+                <p><strong><i class="fa fa-exclamation-triangle"></i> Please Note:</strong><br/>This post appears to be
+                    over 6 months old. </p>
+            </div>
+        
+
+         <div class="rich-text"><html><head></head><body><p>I’m hoping to write a quick tutorial to get you started using <a href="http://angularjs.org/" target="_blank">Angular</a> with <a href="https://www.djangoproject.com/" target="_blank">Django</a> What it turned into was a tutorial fueled by Red Bull. My apologies if it gets sloppy towards the end! </p>
+ 
+ <p>Having read posts on the subject of using Django and Angular together, I felt most were reinventing the wheel, so to speak. Although the example code I have given is crude it should highlight how I've been using them on projects.</p>
+ 
+ <h2>Models</h2>
+ 
+ <p>Lets start with a typical Model.</p>
+ 
+ <p><strong>/jobs/models.py</strong></p>
+ 
+ <pre><code> 
+class Job(models.Model):
+     name = models.CharField(max_length=50)
+     description = models.TextField(null=True, blank=True)
+ </code>
+ </pre>
+ 
+ <p>Alright, nothing special so far. All you have done is create a simple model to contain basic job details.</p>
+ 
+ <h2>The REST API (Tastypie)</h2>
+ 
+ <p><a href="http://angularjs.org/" target="_blank" title="Visit AngularJS">AngularJS</a> is built to consume webservices, so your gonna need a way to expose the Job Model you just created.</p>
+ 
+ <p>Django has a good set of choices to create RESTful APIs. <a href="http://tastypieapi.org/" target="_blank" title="Visit TastyPie">TastyPie</a> is an awesome webservice framework built for the Django framework. It's incredibly powerful, yet easy to setup and use. However, personal preference aside, the same results could be achieved using <a href="http://www.django-rest-framework.org/" target="_blank" title="Visit Django REST framework">Django REST framework</a>, or even constructing your own API responses directly using Django. The choice is entirely yours. For the purposes of this tutorial we'll be using TastyPie.</p>
+ 
+ <p>If you're not familiar with TastyPie head over to the <a href="http://django-tastypie.readthedocs.org/en/latest/" target="_blank" title="TastyPie Documentation">documentation</a>. I won't go into detail regarding installation. One will assume you've setup and added TastyPie to your installed applications and are ready to go.</p>
+ 
+ <p>First, you need to create a resource for your Jobs. TastyPie uses the concept of '<em>Resources</em>'. It describes them as intermediaries between the end user and objects, in this case thats the Job Model.</p>
+ 
+ <p>Start by creating the appropriate resource for the Job Model:</p>
+ 
+ <pre><code>
+ class JobResource(ModelResource):
+     """
+     API Facet
+     """
+     class Meta:
+         queryset = Jobs.objects.all()
+         resource_name = 'job'
+         allowed_methods = ['post', 'get', 'patch', 'delete']
+         authentication = Authentication()
+         authorization = Authorization()
+         always_return_data = True
+ </code>
+ </pre>
+ 
+ <p>From memory, TastyPies documentation suggests naming the file api.py within your application. This is also my preference, but it's not mandatory.You can name the Python file whatever you like, but it's nice to keep consistency.</p>
+ 
+ <p>There are a few things going on in JobResource which is beyond the scope of this tutorial. But, I would just like to draw attention to how JobResource inherits 'ModelResource'. You want to use Tastypie with Django's ORM (the Job Model). Extending this means that many of the API fundamentals are all handled for you.</p>
+ 
+ <p>TastyPie can handle non-ORM data too. By extending directly from Resource you can also get all the API goodies TastyPie has to offer, but without being tied to the ORM. This is particularly useful when making calls to a non ORM, No SQL database as described in the <a href="http://django-tastypie.readthedocs.org/en/latest/non_orm_data_sources.html" target="_blank">documentation</a>.</p>
+ 
+ <p>So far you have created the Model <em>(Job)</em> and a way for the end user to interface with it. Next, you need a way to connect the resource to an actual URL that will eventually allow AngularJS to consume it. You do this in Django by hooking it up to the URLconf. Simply instantiate the resource in your Django URLconf then hook up the URL's:</p>
+ 
+ <pre><code>
+ from tastypie.api import Api
+ from .apps.your_app.api import JobResource
+ 
+ v1_api = Api(api_name='v1')
+ v1_api.register(JobResource())
+ 
+ urlpatterns = patterns('',
+ 
+      (r'^api/', include(v1_api.urls)),
+ )
+ </code></pre>
+ 
+ <p>The 'resource_name' attribute specified in the JobResource is the end point of the url. With that you now have a working API with the Resource endpoint Job. Check it’s all working by running your local server, then visiting http://127.0.0.1:8000/api/job/?format=json in your browser.</p>
+ 
+ <p>You now have a working API for your Job model. Easy.</p>
+ 
+ <h2>Forms</h2>
+ 
+ <p>Before you begin diving into AngularJS we are going to need to create a Job Form using Django's framework. The Job form will later allow you to edit Jobs in the single page application. I know what you're thinking, "why in Django"?</p>
+ 
+ <p>One of Django's design philosophies is "Don’t repeat yourself (DRY)". So it doesn't make sense to build forms using HTML for AngularJS and then in Django too, besides Django does such a good job as this. You may also already have several forms you want to convert, so why repeat the process? Enter, <a href="https://github.com/jrief/django-angular" target="_blank" title="Visit Django Angular">django-angular</a>. This is one cool package you will be glad you came across <em>(I know I was)</em>.</p>
+ 
+ <blockquote>
+ <p>Quote: "<em>Django-Angular is a collection of utilities, which aim to ease the integration of Django with AngularJS by providing reusable components.</em>"</p>
+ </blockquote>
+ 
+ <p>Again, I'm not going to go into any details regarding the setup and installation here. I suggest you head over and check Django-Angular right away! Suffice to say, one of its many ticks it to allow you to use Django forms thus its form validation within AngularJS. Combine this with a package such as 'crispy forms' and you have a powerful all-in-one solution - "this is why I love the Django framework and its community".</p>
+ 
+ <pre><code>
+ from .app.your_app.models import Job
+ from .apps.djangular.forms import NgFormValidationMixin, NgModelFormMixin, AddPlaceholderFormMixin
+ 
+ class JobForm(NgModelFormMixin, forms.ModelForm):
+     """
+     Job Form with a little crispy forms added! 
+     """
+     def __init__(self, *args, **kwargs):
+         super(JobForm, self).__init__(*args, **kwargs)
+         setup_bootstrap_helpers(self)
+ 
+     class Meta:
+         model = Job
+         fields = ('name', 'description',)
+ 
+ def setup_bootstrap_helpers(object):
+     object.helper = FormHelper()
+     object.helper.form_class = 'form-horizontal'
+     object.helper.label_class = 'col-lg-3'
+     object.helper.field_class = 'col-lg-8'</code></pre><code>
+ 
+ <h2>On to AngularJS</h2>
+ 
+ <p>For simplicity you're going to create 3 new templates using the following structure:</p>
+ 
+ </code><pre class="highlight"><code> templates
+    jobs/index.html
+    jobs/new.html
+ base.html
+ </code></pre>
+ 
+ <p> This assumes you have a Job app setup and installed. Your base template will look something like this:</p>
+ 
+ <p><strong>/jobs/base.html</strong></p>
+ 
+ <pre><code>
+ &lt;!DOCTYPE html&gt;
+ &lt;html&gt;
+ &lt;head&gt;
+     &lt;meta charset="utf-8"&gt;
+     &lt;link href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.0.2/css/bootstrap.min.css" rel="stylesheet"&gt;
+ 
+     &lt;script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular.js"&gt;&lt;/script&gt;
+     &lt;script src="/angular-ui-router.min.js"&gt;&lt;/script&gt;
+     &lt;script type="text/javascript" src="http://cdn.jsdelivr.net/restangular/latest/restangular.js"&gt;&lt;/script&gt;
+ 
+ &lt;/head&gt;
+ &lt;body&gt;
+    {% block content %}{% endblock content %}
+    {% block extra_javascript %}{% endblock extra_javascript %}
+ &lt;/body&gt;
+ &lt;/html&gt;
+ </code></pre>
+ 
+ <p>Django-Angular does offer some nice template tags which will include the necessary javascript for you. I recommend using a content distribution network (CDN) to load the necessary files where possible. Doing so gives obvious geographically and bandwidth advantages.</p>
+ 
+ <p>From here you need to create a signal page template that will be served by our Django project. The index.html will serve as the main page for our single page application and later can be used to serve all your CRUD views for Jobs.</p>
+ 
+ <p><strong>/jobs/index.html</strong></p>
+ 
+ <pre><code>
+{% extends "base.html" %}
+ {% load i18n %}
+ {% block content %}
+ &lt;div class="container content" ng-app="JobApp"&gt;
+     &lt;div ui-view &gt;Loading...&lt;/div&gt;
+ &lt;/div&gt;
+ {% endblock content %}
+ {% block extra_javascript %}
+ &lt;script src="{{ STATIC_URL }}/javascript/app.js"&gt;&lt;/script&gt;
+ {% endblock extra_javascript %}
+ </code></pre>
+ 
+ <p><strong>/javascript/app.js</strong></p>
+ 
+ <pre><code>
+var app = angular.module('JobApp', [
+     'ui.router',
+     'restangular'
+ ])
+ 
+ app.config(function ($stateProvider, $urlRouterProvider, RestangularProvider) {
+     // For any unmatched url, send to /route1
+     $urlRouterProvider.otherwise("/");
+     $stateProvider
+         .state('index', {
+ 
+             url: "/",
+             templateUrl: "/static/html/partials/_job_list.html",
+             controller: "JobList"
+         })
+ 
+        .state('new', {
+ 
+             url: "/new",
+             templateUrl: "/jobs/job-form",
+             controller: "JobFormCtrl"
+         })
+ })
+ 
+ app.controller("JobFormCtrl", ['$scope', 'Restangular', 'CbgenRestangular', '$q',
+ function ($scope, Restangular, CbgenRestangular, $q) {
+ 
+ 
+ }])// end controller
+ 
+ </code></pre>
+ 
+ <p>The template and js above is very simple, inheriting from the base template. There are a few attributes you may-not have seen before and will need to understand.</p>
+ 
+ <p>The first of which is ng-app='JobApp'. Without this tag, the AngularJS process does not start. This directive tells AngularJS which element is the root element of the application. Anything you add inside this element will be part of the template managed by AngularJS.</p>
+ 
+ <p>Next, look at the script you have included in the index.html. This app.js script defines the angular module. An Angular module is a collection of functions that are run when the application is 'booted'.</p>
+ 
+ <pre><code>
+ var app = angular.module('JobApp', [
+ </code></pre>
+ 
+ <p>This above line creates the module called 'JobApp'. In the index.html you already instantiated this using the ng-app='JobApp' attribute. What you have basically done here is tell AngularJS you want app.js to own everything inside.</p>
+ 
+ <p>Infact, you could set ng-app on any element in the DOM. For example, if you didn't want a part of the template controlled by Angular you could do this:</p>
+ 
+<pre><code>
+ &lt;h2&gt;I am not inside an AngularJS app&lt;/h2&gt;
+ &lt;div ng-app="embeddedApp"&gt;
+   &lt;h3&gt;Inside an AngularJS app&lt;/h3&gt;
+ &lt;/div&gt;</code></pre>
+ 
+ <p>app.config in app.js also shows the beginnings of your URL routing. AngularJS supplies URL routing by default via $route service in Angular core, but it's inadequate, and has some limitations.</p>
+ 
+ <p>One of the modules you have included is <a href="https://github.com/angular-ui/ui-router" target="_blank">AngularUI Router</a> 'ui.router'. AngularUI Router is an another routing framework for AngularJS which is organised around states, which may optionally have routes, as well as other behaviour, attached.</p>
+ 
+ <p>You have provided just one state in this tutorial called 'new', but you could include lots of different states for you application and hopefully you're having a lightbulb moment right now. You can even add a default behaviour for when no state is detected:</p>
+ 
+ <pre><code>
+  $urlRouterProvider.otherwise("/");
+     $stateProvider
+         .state('index', {
+ 
+             url: "/",
+             templateUrl: "static/html/somepage.html",
+             controller: "SomeController"
+         })
+ 
+ </code></pre>
+ 
+ <p>If unfamiliar with this then I suggest reading up on <a href="https://github.com/angular-ui/ui-router" target="_blank">AngularUI Router</a> when you have completed this tutorial.</p>
+ 
+ <p>The last element within index.html you should understand is 'ui-view'. This is part of AngularUI Router model too. The ui-view directive tells $state where to place your template ie. templateUrl: "/job/new/".</p>
+ 
+ <p>Final template you will be creating is /jobs/new.html. This will hold the basic form you created earlier using the Django-Angular.</p>
+ 
+ <pre><code>
+ {% load crispy_forms_tags %}
+ {% crispy JobForm %}
+ &lt;button type="button" class="btn btn-default"  ng-click="submitJob()"&gt;Create&lt;/button&gt;
+ </code></pre>
+ 
+ <p>Now you just need the view and URL to connect up the form.</p>
+ 
+ <p><strong>/jobs/views.py</strong></p>
+ 
+ <pre><code>
+ from .forms import JobForm
+ 
+ class JobFormView(TemplateView):
+     template_name = "jobs/new.html"
+ 
+     def get_context_data(self, **kwargs):
+         context = super(JobFormView, self).get_context_data(**kwargs)
+         context.update(JobForm=JobForm())
+         return context
+ </code></pre>
+ 
+ <p><strong>/jobs/urls.py</strong></p>
+ 
+<pre><code>
+ from django.conf.urls import url
+ from django.conf.urls import patterns
+ 
+ from .views import JobFormView
+ 
+ urlpatterns = patterns('',
+ 
+                         url(r'^job-form/$',
+                            login_required(JobFormView.as_view()),
+                            name='job_form'),
+ 
+ )
+ 
+ </code></pre>
+ 
+ <p>Now in your browser navigate to http://127.0.0.1:8000/job/#new and you should see the job form in your new single page application.</p>
+ 
+ <p>Our last step is to post our form data when submitJob is clicked. You are going to change the controller, the example below will use <a href="https://github.com/mgonto/restangular" target="_blank">restangular</a>.</p>
+ 
+ <blockquote>
+ <p>Restangular is an AngularJS service that simplifies common GET, DELETE, and UPDATE requests with a minimum of client code. It's a perfect fit for any WebApp that consumes data from a RESTful API.  <a href="https://github.com/mgonto/restangular" target="_blank">restangular</a></p>
+ </blockquote>
+ 
+ <pre><code>
+app.controller("JobFormCtrl", ['$scope', 'Restangular', 'CbgenRestangular', '$q',
+ function ($scope, Restangular, CbgenRestangular, $q) {
+ 
+    $scope.submitJob = function () {
+       var post_update_data = create_resource($scope, CbgenRestangular);
+       $q.when(post_update_data.then(
+                         function (object) {
+                             // success!
+                         },
+ 
+                         function (object){
+                             // error!
+                             console.log(object.data)
+                         }
+                            
+                     ))
+                 }
+ 
+ }])// end controller
+ 
+ app.factory('CbgenRestangular', function (Restangular) {
+         return Restangular.withConfig(function (RestangularConfigurer) {
+             RestangularConfigurer.setBaseUrl('/api/v1');
+         });
+     })
+ 
+ populate_scope_values = function ($scope) {
+     return {name: $scope.name, description: $scope.description };
+ },
+ 
+ create_resource = function ($scope, CbgenRestangular) {
+ var post_data = populate_scope_values($scope)
+     return CbgenRestangular.all('job').post(post_data)
+ },
+ 
+ 
+</code> </pre>
+ 
+ <h2>Where to go from here</h2>
+ 
+ <p>Too much to cover in just one blog post. Best practices should be your next step and head over to <a href="https://egghead.io/lessons" target="_blank">egghead</a>, best tutorials on the web in my opinion. </p>
+ 
+ <p> </p>
+ </body></html></div> 
+    </div>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<section id="comments">
+    <div class="container_blog">
+
+        <div class="row">
+            <div class="row">
+
+
+                <div id="disqus_thread"></div>
+                <script type="text/javascript">
+                    /* * * CONFIGURATION VARIABLES * * */
+                    var disqus_shortname = 'glynjacksondjangoandpython';
+
+                    /* * * DON'T EDIT BELOW THIS LINE * * */
+                    (function () {
+                        var dsq = document.createElement('script');
+                        dsq.type = 'text/javascript';
+                        dsq.async = true;
+                        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                    })();
+                </script>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<section id="sign-off">
+    <div class="container_blog blog_on_blue">
+
+
+        <div class="row">
+            <div class="col-sm-4 col-sm-offset-1">
+                <img class="scrollimation img-responsive img-circle img-center rounded"
+                     src="https://en.gravatar.com/userimage/39276331/5a5bcef78ab3be209b97726888f2aef6.jpg?size=350"
+                     alt="">
+            </div>
+            <div class="col-sm-6 col-sm-offset-1 scrollimation">
+                <h1>That's all Folks!</h1>
+
+                <p>Thanks for reading. Let's keep in Touch:
+                    </br> Follow me on <a href="https://github.com/glynjackson" target="_blank">GitHub</a>
+                    or Twitter @<a href="https://twitter.com/glynjackson" target="_blank">glynjackson</a>
+
+                </p>
+                </br>
+                <p>Glyn Jackson is a Python Nerd, consultant and developer.
+                </p>
+                </br>
+                <a href="http://www.glynjackson.org" title="Home of Django Python Developer"
+                   class="btn btn-theme transparent scrollto">Find out more</a>
+            </div>
+        </div>
+        <!--End row -->
+
+
+    </div>
+</section>
+
+
+
+
+    <footer id="main-footer">
+    <div class="container">
+
+        <div class="row">
+            <div class="col-sm-6 left-col">
+                <h1 class="small-logo">GLYN JACKSON<br><span>Freelance Python & Django Engineer</span></h1>
+                <ul class="footer-nav">
+                    <li><a class="scrollto" href="../../index.html#home" title="Manchester Django Developer">Home</a></li>
+                    <li><a class="scrollto" href="../../index.html#services" title="Manchester Python Developer">Services</a></li>
+                    <li><a class="scrollto" href="../../index.html#portfolio" title="Manchester Developer Portfolio">Portfolio</a></li>
+                    <li><a class="scrollto" href="../../index.html#contact" title="Hire Me In Cheshire & Manchester, UK">Hire Me</a>
+                    </li>
+                    <li><a class="scrollto" href="../../weblog.html" title="Django, Python Blog">Blog</a>
+                    </li>
+                </ul>
+                <p>&copy; Copyright 2016 Webovate Ltd.<br/> Cheshire, Manchester, Freelance Python, Django Developer</p>
+            </div>
+            <div class="col-sm-6 right-col">
+                <h2>Disclaimer</h2>
+                <p>If you use any text, please provide a reference back to the original entry.
+                    <br/>Opinions expressed here represent my own.</p>
+                <a href="https://www.ipse.co.uk/" rel="nofollow" target="_blank"
+                   title="PCG Voice of Freelancing Website">
+                    <img src="https://s3-eu-west-1.amazonaws.com/glynjacksonorg/assets/ipse.jpg" alt="Membership IPSE Voice of Freelancing Logo">
+                </a>
+                <a href="https://www.python.org" target="_blank" title="Python Website Link">
+                    <img src="https://s3-eu-west-1.amazonaws.com/glynjacksonorg/assets/powered-by.jpg" alt="Django and Python Logo">
+                </a>
+            </div>
+
+        </div>
+    </div>
+</footer>
+
+<script type="text/javascript" src="https://s3-eu-west-1.amazonaws.com/glynjacksonorg/js/glynjackson.js"></script>
+</body>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="https://s3-eu-west-1.amazonaws.com/glynjacksonorg/js/libs/jquery-1.8.2.min.js">\x3C/script>')</script>
+
+<script src="https://s3-eu-west-1.amazonaws.com/glynjacksonorg/js/libs/bootstrap.min.js"></script>
+
+
+
+    <script src="https://s3-eu-west-1.amazonaws.com/glynjacksonorg/js/designr-blog.js"></script>
+
+
+<script>
+    (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] || function () {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date();
+        a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+    ga('create', 'UA-68013935-1', 'auto');
+    ga('send', 'pageview');
+
+</script>
+
+</html>

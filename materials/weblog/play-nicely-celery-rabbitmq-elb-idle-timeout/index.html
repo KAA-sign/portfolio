@@ -1,0 +1,286 @@
+
+
+
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <title>
+        Play Nicely - Celery, RabbitMQ &amp; ELB Idle Timeout
+        </title>
+    <meta name="description" content="When RabbitMQ and Celery are behind an Elastic Load Balancer, problems occur when ELB sends TCP connections to your EC2 instances. In a normal request/response cycle, the ELB keeps the connection open for a short time afterwards (default is 60 seconds). Known as the &#39;idle timeout&#39;, under certain circumstances, Celery won&#39;t be notified that the connection is closed."/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="https://s3-eu-west-1.amazonaws.com/glynjacksonorg/css/bootstrap.min.css" /><link rel="stylesheet" href="https://s3-eu-west-1.amazonaws.com/glynjacksonorg/css/flexslider.css" /><link rel="stylesheet" href="https://s3-eu-west-1.amazonaws.com/glynjacksonorg/css/designr-theme-cyan.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link href='http://fonts.googleapis.com/css?family=Lato:400,300,300italic,400italic,700,700italic,900'
+          rel='stylesheet' type='text/css'>
+    
+    <script src="https://s3-eu-west-1.amazonaws.com/glynjacksonorg/js/highlight.pack.js"></script>
+    <link rel="stylesheet" href="https://s3-eu-west-1.amazonaws.com/glynjacksonorg/css/code_highlighters/monokai_sublime.css">
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <script type="text/javascript" src="https://s3-eu-west-1.amazonaws.com/glynjacksonorg/js/libs/modernizr.min.js"></script>
+</head>
+
+<body class="" data-spy="scroll" data-target="#main-nav" data-offset="200">
+
+
+
+    
+<div id="main-nav" class="navbar navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#site-nav">
+                <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand scrollto" href="../../index.html" title="Python Developer Glyn Jackson">GLYN JACKSON<br><span>Freelance Developer</span></a>
+        </div>
+        <div id="site-nav" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="../../index.html#services" title="About my Python and Django services" class="scrollto">About</a>
+                </li>
+                <li>
+                    <a href="../../weblog.html" title="Blog of Glyn Jackson Python Developer">Blog</a>
+                </li>
+                <li>
+                    <a href="https://github.com/glynjackson" target="_blank" title="Python Github Projects" class="scrollto"><i class="fa fa-github"></i> GitHub</a>
+                </li>
+                <li>
+                    <a href="https://www.linkedin.com/in/glynjackson" target="_blank" title="Linkedin Django Projects"
+                       class="scrollto"><i class="fa fa-linkedin-square"></i> LinkedIn</a>
+                </li>
+                <li>
+                    <a href="http://stackoverflow.com/users/1631608/glyn-jackson" target="_blank" title="Stack Python Questions Projects"
+                       class="scrollto"><i class="fa fa-stack-overflow"></i> Stack Overflow</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+
+
+<section id="blog_title">
+
+    <div class="container_blog">
+
+        <div class="row" style="margin-top: 5%">
+
+            <div class="col-sm-6 scrollimation">
+                <h1>Play Nicely - Celery, RabbitMQ &amp; ELB Idle Timeout</h1>
+
+                <p><i class="fa fa-clock-o"></i> March 14, 2016
+                    <br/>
+                    
+                        <i class="fa fa-tag"></i>
+                        <a href="../index.html%3Ftag=Python.html">  Python</a>
+                    
+                        <i class="fa fa-tag"></i>
+                        <a href="../index.html%3Ftag=AWS.html">  AWS</a>
+                    
+                        <i class="fa fa-tag"></i>
+                        <a href="../index.html%3Ftag=Celery.html">  Celery</a>
+                    
+                </p>
+
+            </div>
+            <div class="col-sm-4 col-sm-offset-1 scrollimation ">
+                
+                    <img alt="Timeout" class="img-responsive img-circle img-center" height="300" src="https://glynjacksonorg.s3.amazonaws.com:443/images/TimeOut.2e16d0ba.fill-350x350.jpg" width="300">
+                
+
+            </div>
+        </div>
+        <!--End row -->
+
+    </div>
+    <!--End container -->
+
+</section>
+
+
+<section id="post">
+    <div class="container_blog">
+        <hr>
+        
+            <div class="bs-callout bs-callout-info">
+                <p><strong><i class="fa fa-exclamation-triangle"></i> Please Note:</strong><br/>This post appears to be
+                    over 6 months old. </p>
+            </div>
+        
+
+         <div class="rich-text"><html><head></head><body><p>Celery is a sophisticated tool for distributing workloads. However, if you've ever used Celery behind Amazon's <a href="https://aws.amazon.com/elasticloadbalancing/">Elastic Load Balancer</a> <i>(ELB)</i>, you may have run into problems with timeouts.</p>
+
+<p>When RabbitMQ and Celery are behind an Elastic Load Balancer, problems occur when ELB sends TCP connections to your EC2 instances. In a normal request/response cycle, the ELB keeps the connection open for a short time afterwards <i>(default is 60 seconds)</i>. Known as the 'idle timeout', under certain circumstances, Celery won't be notified that the connection is closed.</p>
+
+<p>The good news is AWS allows us to modify the idle timeout value up to  17 minutes. The bad news, this will NOT solve the problem for obvious reasons. To help address this issue of messages being lost in transit, RabbitMQ added the extension '<a href="https://www.rabbitmq.com/confirms.html">Publisher Confirms</a>' to AMQP. Although currently undocumented, Celery supports this extension when using pyamqp by using the following setting in the broker transport option:</p>
+
+<pre><code>BROKER_TRANSPORT_OPTIONS = {'confirm_publish': True}</code></pre>
+
+<p><strong><i class="fa fa-exclamation-triangle"></i> Note:</strong>  By enabling this option, your application will take a small performance hit as each task waits for confirmation.</p></body></html></div> 
+    </div>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<section id="comments">
+    <div class="container_blog">
+
+        <div class="row">
+            <div class="row">
+
+
+                <div id="disqus_thread"></div>
+                <script type="text/javascript">
+                    /* * * CONFIGURATION VARIABLES * * */
+                    var disqus_shortname = 'glynjacksondjangoandpython';
+
+                    /* * * DON'T EDIT BELOW THIS LINE * * */
+                    (function () {
+                        var dsq = document.createElement('script');
+                        dsq.type = 'text/javascript';
+                        dsq.async = true;
+                        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                    })();
+                </script>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<section id="sign-off">
+    <div class="container_blog blog_on_blue">
+
+
+        <div class="row">
+            <div class="col-sm-4 col-sm-offset-1">
+                <img class="scrollimation img-responsive img-circle img-center rounded"
+                     src="https://en.gravatar.com/userimage/39276331/5a5bcef78ab3be209b97726888f2aef6.jpg?size=350"
+                     alt="">
+            </div>
+            <div class="col-sm-6 col-sm-offset-1 scrollimation">
+                <h1>That's all Folks!</h1>
+
+                <p>Thanks for reading. Let's keep in Touch:
+                    </br> Follow me on <a href="https://github.com/glynjackson" target="_blank">GitHub</a>
+                    or Twitter @<a href="https://twitter.com/glynjackson" target="_blank">glynjackson</a>
+
+                </p>
+                </br>
+                <p>Glyn Jackson is a Python Nerd, consultant and developer.
+                </p>
+                </br>
+                <a href="http://www.glynjackson.org" title="Home of Django Python Developer"
+                   class="btn btn-theme transparent scrollto">Find out more</a>
+            </div>
+        </div>
+        <!--End row -->
+
+
+    </div>
+</section>
+
+
+
+
+    <footer id="main-footer">
+    <div class="container">
+
+        <div class="row">
+            <div class="col-sm-6 left-col">
+                <h1 class="small-logo">GLYN JACKSON<br><span>Freelance Python & Django Engineer</span></h1>
+                <ul class="footer-nav">
+                    <li><a class="scrollto" href="../../index.html#home" title="Manchester Django Developer">Home</a></li>
+                    <li><a class="scrollto" href="../../index.html#services" title="Manchester Python Developer">Services</a></li>
+                    <li><a class="scrollto" href="../../index.html#portfolio" title="Manchester Developer Portfolio">Portfolio</a></li>
+                    <li><a class="scrollto" href="../../index.html#contact" title="Hire Me In Cheshire & Manchester, UK">Hire Me</a>
+                    </li>
+                    <li><a class="scrollto" href="../../weblog.html" title="Django, Python Blog">Blog</a>
+                    </li>
+                </ul>
+                <p>&copy; Copyright 2016 Webovate Ltd.<br/> Cheshire, Manchester, Freelance Python, Django Developer</p>
+            </div>
+            <div class="col-sm-6 right-col">
+                <h2>Disclaimer</h2>
+                <p>If you use any text, please provide a reference back to the original entry.
+                    <br/>Opinions expressed here represent my own.</p>
+                <a href="https://www.ipse.co.uk/" rel="nofollow" target="_blank"
+                   title="PCG Voice of Freelancing Website">
+                    <img src="https://s3-eu-west-1.amazonaws.com/glynjacksonorg/assets/ipse.jpg" alt="Membership IPSE Voice of Freelancing Logo">
+                </a>
+                <a href="https://www.python.org" target="_blank" title="Python Website Link">
+                    <img src="https://s3-eu-west-1.amazonaws.com/glynjacksonorg/assets/powered-by.jpg" alt="Django and Python Logo">
+                </a>
+            </div>
+
+        </div>
+    </div>
+</footer>
+
+<script type="text/javascript" src="https://s3-eu-west-1.amazonaws.com/glynjacksonorg/js/glynjackson.js"></script>
+</body>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="https://s3-eu-west-1.amazonaws.com/glynjacksonorg/js/libs/jquery-1.8.2.min.js">\x3C/script>')</script>
+
+<script src="https://s3-eu-west-1.amazonaws.com/glynjacksonorg/js/libs/bootstrap.min.js"></script>
+
+
+
+    <script src="https://s3-eu-west-1.amazonaws.com/glynjacksonorg/js/designr-blog.js"></script>
+
+
+<script>
+    (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] || function () {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date();
+        a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+    ga('create', 'UA-68013935-1', 'auto');
+    ga('send', 'pageview');
+
+</script>
+
+</html>

@@ -1,0 +1,306 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<section id="services">
+    <div class="container">
+        <h1 class="section-title scrollimation scale-in">Who is this <span>guy?</span></h1>
+        <div class="container" style='font-size: 1.1em'>
+            <p><i class="fa fa-quote-left"></i> Self-confessed nerd and problem solver, Glyn is an award-winning
+                freelance software developer
+                with over 15 years commercial experience in both the Public and the Private sector. <i
+                        class="fa fa-quote-right"></i></p>
+            <p>My name is Glyn Jackson. I'm a professional full-stack engineer based in the North West, Cheshire and
+                Manchester, UK. I develop
+                web applications and have a strong background in cloud-based solutions, API development,
+                distributed computing, and prototyping utilising <a href="https://www.python.org/"
+                                                                    target="_blank"
+                                                                    title="Python">Python</a> and the <a
+                        href="https://www.djangoproject.com"
+                        target="_blank"
+                        title="Django Framework">Django Framework</a>. I excel at helping clients bring their ideas
+                to life, and when you hire me, I'll do the same for you!</p>
+
+            <p>Currently, I'm freelancing with a computer
+                vision company
+                and a Manchester based tech’ company, in partnership with
+                <b>Greater Manchester Police</b> and the <b>Home Office</b>.
+                Some of my completed work includes clients, <b>Samsung</b>, <b>HTC</b>, <b>SimplyBiz</b>,
+                <b>NHS</b> and <b>Argos</b>.</p>
+        </div>
+    </div>
+    <!--End container -->
+</section>
+
+<section id="portfolio">
+    <div class="container masonry-wrapper scrollimation fade-in">
+        <div id="projects-container">
+            <a class="project-item python" href="https://ctzn.co.uk/" target="_blank"
+               data-images="https://s3-eu-west-1.amazonaws.com/glynjacksonorg/assets/projects/ctzn.jpg,">
+                <img class="img-responsive project-image" src="https://s3-eu-west-1.amazonaws.com/glynjacksonorg/assets/projects/ctzn-thumb.jpg"
+                     alt="CTZN Project">
+                <div class="hover-mask">
+                    <h2 class="project-title">CTZN Mobile</br> Click to read more</h2>
+                    <p>www.ctzn.co.uk</p>
+                </div>
+                <div class="sr-only project-description">
+                    <p>CTZN lead engineer, Funded by the Home Office and Manchester Police, CTZN aims to engage with young people aged 13 to 18
+                        creating a sustainable, two-way communication channel and offering a safe social network
+                        that connects young people with opportunities that can make a real difference to their
+                        communities; rewarding and recognising their positive contributions.</p>
+                    <ul>
+                        <li>Python 3.5</li>
+                        <li>jQuery/Javascript and HTML5</li>
+                        <li>C/C++</li>
+                        <li>Amazon AWS</li>
+                        <li>RabbitMQ</li>
+                        <li>Celery</li>
+                        <li>Redis</li>
+                    </ul>
+                </div>
+            </a>
+            <a class="project-item python" href="https://htcspecialist.com/" target="_blank"
+               data-images="https://s3-eu-west-1.amazonaws.com/glynjacksonorg/assets/projects/htc_specialist2.jpg, https://s3-eu-west-1.amazonaws.com/glynjacksonorg/assets/projects/htc_specialist.png">
+                <img class="img-responsive project-image" src="https://s3-eu-west-1.amazonaws.com/glynjacksonorg/assets/projects/htc-thumb.jpg"
+                     alt="HTC Specialist">
+                <div class="hover-mask">
+                    <h2 class="project-title">HTC Specialist </br> Click to read more</h2>
+                    <p>www.htcspecialist.com</p>
+                </div>
+                <div class="sr-only project-description">
+                    <p>Lead developer tasked with architecting and then implementing a RESTful API for
+                        Staff incentive offers (HTC Specialist App).
+                    </p>
+                    <ul>
+                        <li>Python 2.7.x Django Framework 1.6+</li>
+                        <li>jQuery/Javascript and HTML5</li>
+                        <li>Tastypie - API</li>
+                        <li>Apache Server/mod_wsgi</li>
+                        <li>Amazon AWS</li>
+                        <li>RabbitMQ</li>
+                        <li>Celery</li>
+                    </ul>
+                </div>
+            </a>
+            <a class="project-item other" href="index.html">
+                <img class="img-responsive project-image" src="https://s3-eu-west-1.amazonaws.com/glynjacksonorg/assets/projects/nhs-thumb.jpg"
+                     alt=">NHS Primary Care Trust">
+                <div class="hover-mask">
+                    <h2 class="project-title">NHS Primary Care Trust </h2>
+                </div>
+            </a>
+            <a class="project-item other" href="index.html">
+                <img class="img-responsive project-image" src="https://s3-eu-west-1.amazonaws.com/glynjacksonorg/assets/projects/argos-thumb.jpg"
+                     alt="Argos">
+                <div class="hover-mask">
+                    <h2 class="project-title">Argos Survey</h2>
+                    <p>www.argos.co.uk</p>
+                </div>
+            </a>
+            <a class="project-item python" href="http://www.rudifferent.co.uk" target="_blank"
+               data-images="https://s3-eu-west-1.amazonaws.com/glynjacksonorg/assets/projects/rudifferent.jpg">
+                <img class="img-responsive project-image"
+                     src="https://s3-eu-west-1.amazonaws.com/glynjacksonorg/assets/projects/rudifferent-thumb.jpg"
+                     alt="HTC Specialist">
+                <div class="hover-mask">
+                    <h2 class="project-title">R U Different</br> Click to read more</h2>
+                    <p>www.rudifferent.co.uk</p>
+                </div>
+                <div class="sr-only project-description">
+                    <p>I originally designed and developed the first iteration of an award winning Survey Engine
+                        ‘How well do you know your mates’. Today this survey engine has evolved into a nationwide
+                        survey and report system helping LAs (local authorities) and supporting intervention
+                        campaigns in Schools in the UK.
+                    </p>
+                    <p>R U Different was built to scale, using a number of EC2 machines based on
+                        demand. Today, R U Different has collected <strong>over 4 million responses</strong> and
+                        gives real time reports to local authorities.
+                    </p>
+                </div>
+            </a>
+            <a class="project-item other" href="http://www.simplybiz.co.uk" target="_blank"
+               data-images="https://s3-eu-west-1.amazonaws.com/glynjacksonorg/assets/projects/sb.png">
+                <img class="img-responsive project-image"
+                     src="https://s3-eu-west-1.amazonaws.com/glynjacksonorg/assets/projects/simplybiz-thumb.jpg"
+                     alt="SimplyBiz Logo">
+                <div class="hover-mask">
+                    <h2 class="project-title">SimplyBiz</br> Click to read more</h2>
+                    <p>www.simplybiz.co.uk</p>
+                </div>
+                <div class="sr-only project-description">
+                    <p>Lead developer and architect for Gencia Media on a 6 month project to redevelop a 10 year old
+                        legacy system used
+                        by thousands of their members. A huge task that involved over 25+ sites, and integrated
+                        platforms. Today I don’t have much involvement with the system, however the decisions I made to
+                        use MURA CMS has allowed them to keep the competitive edge and ease of development for many
+                        years to come.
+                    </p>
+                    <br/>
+                    <ul>
+                        <li>Adobe ColdFusion 9+</li>
+                        <li>MURA CMS</li>
+                        <li>Windows Server IIS7</li>
+                        <li>AngularJS/jQuery/Javascript and HTML</li>
+                        <li>MS SQL Server</li>
+                    </ul>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div id="project-modal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="left-col">
+                        <img class="img-responsive" src="https://s3-eu-west-1.amazonaws.com/glynjacksonorg/assets/imac.png" alt="">
+                        <div class="loader"></div>
+                        <div class="image-wrapper"></div>
+                    </div>
+                    <h1></h1>
+                    <div class="project-descr"></div>
+                    <div class="clearfix"></div>
+                    <p class="text-center"><a class="btn btn-theme"><i class="icon-external-link"></i>Visit Website</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>->
+</section>
+
+<section class="general">
+        <div class="container">
+            <p><i class="fa fa-quote-left"></i> Working with Glyn has been fantastic. He has a deep understanding
+                of Amazon Web Services
+                and real-world experience of deploying large, high volume applications across their infrastructure.
+                Glyn is a very experienced Python, Django and Angular.js developer and picks up new skills very
+                quickly. Glyn is also very good at managing client expectations, and a great communicator with his
+                co-developers and I would happily recommend him for future work. <i class="fa fa-quote-right"></i>
+                <small> - <strong>Howie Weiner - Senior Web Developer at BBC</strong></small>
+            </p>
+        </div>
+
+     <div class="container">
+            <p>
+                <i class="fa fa-quote-left"></i> Glyn is one of a kind, he is completely in a league of his own when
+                it comes to turning complex
+                technology and transforming ideas into ultra simple UX's for our clients customers. Outstanding
+                developer. <i class="fa fa-quote-right"></i>
+                <small> - <strong>Stephen Conway - Director MGM Mobile</strong></small>
+            </p>
+        </div>
+
+
+</section>
+
+<section class="general">
+
+     <div class="container">
+            <p><i class="fa fa-quote-left"></i> Set against a background of uncertainties around funding and
+                availability of resources I’m very proud of the technical team who have risen to the challenge
+                and been recognised by this award. In particular Glyn Jackson, the technical lead on the project
+                who has worked relentlessly, sometimes around the clock, to make this happen. I’m so pleased
+                that his hard work and dedication and that of the rest of the team has been rewarded.
+                We still have a long way to go and it’s recognition like this that inspires us to keep moving forward,
+                toward realisation of our ultimate vision. <i class="fa fa-quote-right"></i>
+                <small> - <strong>Tony Braide - Managing Director of Gencia Media Ltd and Winner,
+                    Digital Entrepreneur Awards UK</strong></small>
+            </p>
+        </div>
+</section>
+
+<section id="testimonials">
+        <div class="container">
+
+            <div class="row services scrollimation scale-in">
+                <h1 class="section-title scrollimation scale-in">What I do <span>well</span></h1>
+                <div class="col-md-3 text-center">
+                    <a href="index.html#fakelink" class="icon"><i class="fa fa-code-fork"></i></a>
+
+                    <h2>Environment</h2>
+                </div>
+                <div class="col-md-3 details">
+                    <p>Git, GitHub, BitBucket, Docker Hub, pip, Agile (Scrum, Kanban), JIRA, Linux Unix, OSX, CI,
+                        Jenkins
+                        and Test Driven Development.</p>
+                </div>
+                <div class="col-md-3 text-center">
+                    <a href="index.html#fakelink" class="icon"><i class="fa fa-code"></i></a>
+
+                    <h2>Code</h2>
+                </div>
+                <div class="col-md-3 details">
+                    <p>Python 3.4+/2.7+, Django Framework, Flask, Celery, C, JAVA,
+                        Shell, Perl, HTML5, CSS, Sass, Angular, JQuery, Node.js, Machine Learning,
+                        and Microservice Development.</p>
+                </div>
+            </div>
+            <!--End row (top) -->
+            <div class="row line visible-md visible-lg">
+                <div class="col-md-3"><span class="spot"></span></div>
+                <div class="col-md-3"><span class="spot"></span></div>
+                <div class="col-md-3"><span class="spot"></span></div>
+                <div class="col-md-3"><span class="spot"></span></div>
+            </div>
+            <!--End row -->
+            <div class="row services bottom-row scrollimation fade-right">
+                <div class="col-md-3 text-center col-md-push-3">
+                    <h2>Data</h2>
+                    <a href="index.html#fakelink" class="icon"><i class="fa fa-database"></i></a>
+                </div>
+                <div class="col-md-3 details col-md-pull-3">
+                    <p>PostgreSQL, Redis, memcached, MySQL, SQL Server, MongoDB, CouchDB, RDS, Oracle, and SQLite.</p>
+                </div>
+                <div class="col-md-3 text-center  col-md-push-3">
+                    <h2>Deployment</h2>
+                    <a href="index.html#fakelink" class="icon"><i class="fa fa-rocket"></i></a>
+                </div>
+                <div class="col-md-3 details  col-md-pull-3">
+                    <p>Docker, Amazon Web Services (AWS), RackSpace, Nginx,
+                        Gunicorn, WSGI, Apache, IIS Celery and RabbitMQ.</p>
+                </div>
+            </div>
+            <!--End row (bottom)-->
+        </div>
+        <!--End container -->
+</section><!--End testimonials section -->
+
+<section class="general">
+        <div class="container">
+            <p><i class="fa fa-quote-left"></i> Glyn is one of the few internet experts that can speak in English.
+                Highly knowledgeable, experianced and articulate. Explain to Glyn what it is you think you want to
+                achive and Glyn will take you back to basics and help you understand what you actually want to
+                achieve, how to achive it and how to keep it achieved. A pleasure to work with.
+                <i class="fa fa-quote-right"></i>
+                <small> - <strong>Shaun Longstaff - Planner Western Power Distribution</strong></small>
+            </p>
+        </div>
+</section>
+
+<section id="contact">
+    <div class="container">
+        <h1 class="section-title scrollimation scale-in">Get in <span>touch</span> Hire Me</h1>
+        <div class="row">
+            <div class="col-sm-5 contact-info scrollimation fade-right">
+                <h1 id="contact-title">I'm available for hire</h1>
+                <div class="bs-callout bs-callout-info">
+                    <p>My current availability is limited due to new contractual commitments.
+                        I am open to some limited freelance/contractual
+                        roles. I am fully insured and work remotely. Onsite work only within the North West.</p>
+                </div>
+            </div>
+            <div class="col-sm-5 contact-info scrollimation fade-right">
+                <h1 id="contact-title">...sometimes</h1>
+                <div class="bs-callout bs-callout-info">
+                    <p><strong>RECRUITERS:</strong> Sorry, I just don't work with recruiters, don't bother contacting me.</p>
+                </div>
+            </div>
+        </div>
+        <!-- End row -->
+    </div>
+    <!-- End container -->
+</section><!-- End contact section -->
+
+{% endblock content %}

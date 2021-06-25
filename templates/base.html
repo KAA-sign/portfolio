@@ -1,16 +1,21 @@
+{% load static %}
+
 <!DOCTYPE html>
-<html class="no-js">
+<html lang="en">
 <head>
     <meta charset="utf-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <title>
         Антон Кузнецов - Python Django Developer 
     </title>
     <meta name="description" content="Антон Кузнецов is a Python, Django web developer."/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <link rel="stylesheet" href="https://s3-eu-west-1.amazonaws.com/glynjacksonorg/css/bootstrap.min.css" /><link rel="stylesheet" href="https://s3-eu-west-1.amazonaws.com/glynjacksonorg/css/flexslider.css" /><link rel="stylesheet" href="https://s3-eu-west-1.amazonaws.com/glynjacksonorg/css/designr-theme-cyan.css" />
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/flexslider.css' %}">
+    <link rel="stylesheet" href="{% static 'css/designr-theme-cyan.css' %}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-    <link href='http://fonts.googleapis.com/css?family=Lato:400,300,300italic,400italic,700,700italic,900' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Lato:400,300,300italic,400italic,700,700italic,900'rel='stylesheet' type='text/css'>
+    
+    <script type="text/javascript" src="https://s3-eu-west-1.amazonaws.com/glynjacksonorg/js/libs/modernizr.min.js"></script>
 </head>
 
 <body class="template-homepage" data-spy="scroll" data-target="#main-nav" data-offset="200">
@@ -28,13 +33,13 @@
           <a href="index.html#home" class="scrollto" title="Manchester Freelance Developer">Home</a>
         </li>
         <li>
-          <a href="index.html#services" class="scrollto" title="Django Freelance Developer">Обо мне</a>
+          <a href="index.html#services" class="scrollto" title="About_me">Обо мне</a>
         </li>
         <li>
-          <a href="index.html#about" class="scrollto" title="Python Freelance Developer">Проекты</a>
+          <a href="index.html#about" class="scrollto" title="Projects">Проекты</a>
         </li>
         <li>
-          <a href="index.html#contact" class="scrollto" title="Hire Me for Your Django Project">Конакты</a>
+          <a href="index.html#contact" class="scrollto" title="Сontacts">Конакты</a>
         </li>
           <li>
           <a href="weblog.html" title="Python and Django Blog">Блог</a>
@@ -81,17 +86,17 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-6 left-col">
-                <h1 class="small-logo">АНТОН КУЗНЕЦОВ<br><span>Freelance Python & Django Engineer</span></h1>
+                <h1 class="small-logo">АНТОН КУЗНЕЦОВ<br><span>Python & Django Engineer</span></h1>
                 <ul class="footer-nav">
                     <li><a class="scrollto" href="index.html#home" title="Manchester Django Developer">Home</a></li>
-                    <li><a class="scrollto" href="index.html#services" title="Manchester Python Developer">My Services</a></li>
-                    <li><a class="scrollto" href="index.html#portfolio" title="Manchester Developer Portfolio">Portfolio</a></li>
-                    <li><a class="scrollto" href="index.html#contact" title="Hire Me In Cheshire & Manchester for Django Development">Hire Me</a>
+                    <li><a class="scrollto" href="index.html#services" title="About_me">Обо мне</a></li>
+                    <li><a class="scrollto" href="index.html#portfolio" title="Projects">Проекты</a></li>
+                    <li><a class="scrollto" href="index.html#contact" title="Сontacts">Конакты</a>
                     </li>
                     <li><a class="scrollto" href="weblog.html" title="Django, Python Blog">Blog</a>
                     </li>
                 </ul>
-                <p>&copy; Copyright 2017 Webovate Ltd.<br/> Cheshire, Manchester, Freelance Python, Django Developer</p>
+                <p>&copy; Anton Kuznecov (the template is stolen)</p>
             </div>
             <div class="col-sm-6 right-col">
                 <a href="https://www.python.org" target="_blank" title="Python Website Link">

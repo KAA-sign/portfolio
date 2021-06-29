@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
 {% block content %}
 
 <section id="services">
@@ -35,7 +37,7 @@
 <section id="portfolio">
     <div class="container masonry-wrapper scrollimation fade-in">
         <div id="projects-container">
-            <a class="project-item python" href="https://ctzn.co.uk/" target="_blank"
+            <a class="project-item python" href="https://www.python.org/" target="_blank"
                data-images="https://s3-eu-west-1.amazonaws.com/glynjacksonorg/assets/projects/ctzn.jpg,">
                 <img class="img-responsive project-image" src="https://s3-eu-west-1.amazonaws.com/glynjacksonorg/assets/projects/ctzn-thumb.jpg"
                      alt="CTZN Project">
@@ -59,7 +61,7 @@
                     </ul>
                 </div>
             </a>
-            <a class="project-item python" href="https://htcspecialist.com/" target="_blank"
+            <a class="project-item python" href="https://www.python.org/" target="_blank"
                data-images="https://s3-eu-west-1.amazonaws.com/glynjacksonorg/assets/projects/htc_specialist2.jpg, https://s3-eu-west-1.amazonaws.com/glynjacksonorg/assets/projects/htc_specialist.png">
                 <img class="img-responsive project-image" src="https://s3-eu-west-1.amazonaws.com/glynjacksonorg/assets/projects/htc-thumb.jpg"
                      alt="HTC Specialist">
@@ -97,7 +99,7 @@
                     <p>www.argos.co.uk</p>
                 </div>
             </a>
-            <a class="project-item python" href="http://www.rudifferent.co.uk" target="_blank"
+            <a class="project-item python" href="https://www.python.org/" target="_blank"
                data-images="https://s3-eu-west-1.amazonaws.com/glynjacksonorg/assets/projects/rudifferent.jpg">
                 <img class="img-responsive project-image"
                      src="https://s3-eu-west-1.amazonaws.com/glynjacksonorg/assets/projects/rudifferent-thumb.jpg"
@@ -222,9 +224,7 @@
                     <h2>Environment</h2>
                 </div>
                 <div class="col-md-3 details">
-                    <p>Git, GitHub, BitBucket, Docker Hub, pip, Agile (Scrum, Kanban), JIRA, Linux Unix, OSX, CI,
-                        Jenkins
-                        and Test Driven Development.</p>
+                    <p>Git, GitHub, pip, Linux Unix.</p>
                 </div>
                 <div class="col-md-3 text-center">
                     <a href="index.html#fakelink" class="icon"><i class="fa fa-code"></i></a>
@@ -232,9 +232,7 @@
                     <h2>Code</h2>
                 </div>
                 <div class="col-md-3 details">
-                    <p>Python 3.4+/2.7+, Django Framework, Flask, Celery, C, JAVA,
-                        Shell, Perl, HTML5, CSS, Sass, Angular, JQuery, Node.js, Machine Learning,
-                        and Microservice Development.</p>
+                    <p>Python 3, Django Framework, HTML5, CSS, JQuery.</p>
                 </div>
             </div>
             <!--End row (top) -->
@@ -251,20 +249,17 @@
                     <a href="index.html#fakelink" class="icon"><i class="fa fa-database"></i></a>
                 </div>
                 <div class="col-md-3 details col-md-pull-3">
-                    <p>PostgreSQL, Redis, memcached, MySQL, SQL Server, MongoDB, CouchDB, RDS, Oracle, and SQLite.</p>
+                    <p>PostgreSQL, MySQL, SQL Server, MongoDB and SQLite.</p>
                 </div>
                 <div class="col-md-3 text-center  col-md-push-3">
                     <h2>Deployment</h2>
                     <a href="index.html#fakelink" class="icon"><i class="fa fa-rocket"></i></a>
                 </div>
                 <div class="col-md-3 details  col-md-pull-3">
-                    <p>Docker, Amazon Web Services (AWS), RackSpace, Nginx,
-                        Gunicorn, WSGI, Apache, IIS Celery and RabbitMQ.</p>
+                    <p>Docker, Nginx, Gunicorn, WSGI, Apache.</p>
                 </div>
             </div>
-            <!--End row (bottom)-->
         </div>
-        <!--End container -->
 </section>
 
 <section id="contact">
@@ -286,9 +281,7 @@
                 </div>
             </div>
         </div>
-        <!-- End row -->
     </div>
-    <!-- End container -->
 </section>
 
 {% endblock content %}
